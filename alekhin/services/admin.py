@@ -15,10 +15,10 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(Specialist)
 class SpecialistAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'image')
-    list_filter = ('name', 'slug', 'image')
-    search_fields = ('name', 'slug', 'image')
-    list_editable = ('slug', 'image')
+    list_display = ('name', 'image')
+    list_filter = ('name',)
+    search_fields = ('name', 'image')
+    list_editable = ('image',)
     list_per_page = 25
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('services')
