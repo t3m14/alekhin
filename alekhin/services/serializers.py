@@ -22,4 +22,4 @@ class ServiceSerializer(serializers.ModelSerializer):
 class SpecialistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialist
-        fields = '__all__'        
+        fields = '__all__'
