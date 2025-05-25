@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.utils import timezone
+from specialists.models import Specialist
 import re
 
 class Service(models.Model):
@@ -13,7 +14,7 @@ class Service(models.Model):
     description = models.TextField(null=True, blank=True)
     service_direction = models.IntegerField(null=True, blank=True)
     service_type = models.IntegerField(null=True, blank=True)
-    specialists = models.ForeignKey('Specialist', on_delete=models.CASCADE, null=True, blank=True)
+    specialists = models.ForeignKey(Specialist, on_delete=models.CASCADE, null=True, blank=True)
     readings = models.TextField(null=True, blank=True)
     contraindications = models.TextField(null=True, blank=True)
     devices = models.TextField(null=True, blank=True)
@@ -38,14 +39,3 @@ class Service(models.Model):
         super().save(*args, **kwargs)
 
 
-class Specialist(models.Model):
-    name = models.CharField(max_length=255)
-    image = models.CharField(max_length=255)
-    directions = models.JSONField(default=list)
-    titles = models.JSONField(default=list)
-    experience = models.IntegerField()
-    is_reliable = models.BooleanField(default=False)
-    degree = models.CharField(max_length=255, null=True, blank=True)
-    education = models.CharField(max_length=255, null=True, blank=True)
-    biography = models.TextField(null=True, blank=True)
-    serts = models.JSONField(default=list)

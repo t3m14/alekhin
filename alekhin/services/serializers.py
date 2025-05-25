@@ -19,7 +19,3 @@ class ServiceSerializer(serializers.ModelSerializer):
             if request and  hasattr(request, 'user') and request.user.is_authenticated:
                 return obj.enabled
             return False
-class SpecialistSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Specialist
-        fields = '__all__'

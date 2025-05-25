@@ -52,28 +52,3 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-class SpecialistViewSet(viewsets.ModelViewSet):
-    # queryset = Specialist.objects.all().order_by('-created_at')
-    serializer_class = SpecialistSerializer
-    filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
-    # search_fields = ['name', 'description', 'slug']
-    lookup_field = 'slug'
-
-    def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            return [IsAuthenticated()]
-        return []
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        
-        # Smart search
-        search_query = self.request.query_params.get('search', None)
-        if search_query:
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(specialization__icontains=search_query)
-            ).distinct()
-
-        return queryset

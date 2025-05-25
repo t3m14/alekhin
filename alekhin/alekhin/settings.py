@@ -33,6 +33,7 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000",
 CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = ["37.230.112.207",
                 "http://37.230.112.207",
+                "127.0.0.1",
                 ]
 
 
@@ -49,10 +50,22 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'corsheaders',
-    'services',
     'accounts',
+    'specialists',
+    'services',
+    'service_directions',
+    'images',
+    'job_titles',
+    'service_types',
+
 ]
+
+# Настройки для медиа файлов
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
 AUTHENTICATION_BACKENDS = [
     'accounts.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
