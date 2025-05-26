@@ -13,7 +13,10 @@ class ServiceSerializer(serializers.ModelSerializer):
             'images', 'serts', 'is_popular', 'slug',
             'created_at'
         ]
-        read_only_fields = ['created_at',]
+        read_only_fields = ['created_at']
+        extra_kwargs = {
+            'slug': {'required': False, 'read_only': True}
+        }
         def get_sensensitive_fields(self, obj):
             request = self.context.get('request')
             if request and  hasattr(request, 'user') and request.user.is_authenticated:

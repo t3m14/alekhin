@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from .models import ServiceDirection
 from .serializers import ServiceDirectionSerializer
+from django.utils.text import slugify
 
 class ServiceDirectionViewSet(viewsets.ModelViewSet):
     queryset = ServiceDirection.objects.all()
@@ -21,6 +22,8 @@ class ServiceDirectionViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        if not serializer.validated_data.get('slug'):
+            serializer.validated_data['slug'] = slugify(serializer.validated_data.get('name', ''))
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=201, headers=headers)
@@ -30,6 +33,8 @@ class ServiceDirectionViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
+        if not serializer.validated_data.get('slug') and 'name' in serializer.validated_data:
+            serializer.validated_data['slug'] = slugify(serializer.validated_data['name'])
         self.perform_update(serializer)
         return Response(serializer.data)
 

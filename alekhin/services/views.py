@@ -38,17 +38,13 @@ class ServiceViewSet(viewsets.ModelViewSet):
             ).distinct()
 
         # Filtering
-        service_direction = self.request.query_params.get('service_direction', None)
-        if service_direction:
-            queryset = queryset.filter(service_direction=service_direction)
+        service_direction_id = self.request.query_params.get('service_direction', None)
+        if service_direction_id:
+            queryset = queryset.filter(service_direction_id=service_direction_id)
 
-        service_type = self.request.query_params.get('service_type', None)
-        if service_type:
-            queryset = queryset.filter(service_type=service_type)
-
-        specialists = self.request.query_params.get('specialists', None)
-        if specialists:
-            queryset = queryset.filter(specialists__id=specialists)
+        service_type_id = self.request.query_params.get('service_type', None)
+        if service_type_id:
+            queryset = queryset.filter(service_type_id=service_type_id)
 
         return queryset
     
