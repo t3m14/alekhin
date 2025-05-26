@@ -11,3 +11,5 @@ services:
     volumes:
       - ./data:/app/data
       - ./media:/app/media
+      - ./config:/app/config
+      - ./db.sqlite3:/app/db.sqlite3
