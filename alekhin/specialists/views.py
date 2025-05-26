@@ -6,17 +6,11 @@ from .models import Specialist
 from .serializers import SpecialistSerializer
 
 class SpecialistFilter(django_filters.FilterSet):
+    directions = django_filters.CharFilter(lookup_expr='icontains')
+
     class Meta:
         model = Specialist
         fields = ['directions']
-        filter_overrides = {
-            'JSONField': {
-                'filter_class': django_filters.CharFilter,
-                'extra': lambda f: {
-                    'lookup_expr': 'icontains',
-                }
-            },
-        }
 
 class SpecialistViewSet(viewsets.ModelViewSet):
     serializer_class = SpecialistSerializer
