@@ -9,7 +9,7 @@ class SpecialistViewSet(viewsets.ModelViewSet):
     serializer_class = SpecialistSerializer
     filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['name', 'description', 'slug']
-    filterset_fields = ['direction']
+    filterset_fields = ['directions']
     lookup_field = 'slug'
     pagination_class = None
     http_method_names = ['get', 'post', 'put', 'delete']
