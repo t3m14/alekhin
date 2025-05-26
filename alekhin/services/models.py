@@ -28,7 +28,9 @@ class Service(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            slug = slugify(self.name)
+            from django.utils.text import slugify
+            from unidecode import unidecode
+            slug = slugify(unidecode(self.name))
             slug = re.sub(r'-+', '-', slug)
             original_slug = slug
             counter = 1
