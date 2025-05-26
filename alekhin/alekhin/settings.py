@@ -31,10 +31,7 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000",
                         "http://37.230.112.207:3000",
                         ]
 CORS_ALLOW_CREDENTIALS = True
-ALLOWED_HOSTS = ["37.230.112.207",
-                "http://37.230.112.207",
-                "127.0.0.1",
-                ]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
