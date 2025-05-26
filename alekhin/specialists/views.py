@@ -5,11 +5,24 @@ from django_filters import rest_framework as django_filters
 from .models import Specialist
 from .serializers import SpecialistSerializer
 
+class SpecialistFilter(django_filters.FilterSet):
+    class Meta:
+        model = Specialist
+        fields = ['directions']
+        filter_overrides = {
+            'JSONField': {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                }
+            },
+        }
+
 class SpecialistViewSet(viewsets.ModelViewSet):
     serializer_class = SpecialistSerializer
     filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['name', 'description', 'slug']
-    filterset_fields = ['directions']
+    filterset_class = SpecialistFilter
     lookup_field = 'slug'
     pagination_class = None
     http_method_names = ['get', 'post', 'put', 'delete']
