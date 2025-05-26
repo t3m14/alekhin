@@ -131,3 +131,30 @@ class ImageViewSet(viewsets.ModelViewSet):
             
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def retrieve_by_slug(self, request, *args, **kwargs):
+        """Получение изображения по слагу"""
+        # получтиь слаг из тела запроса
+        slug = request.data.get('slug', None)
+        if not slug:
+            return Response(
+                {"error": "Слаг не указан"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            print(slug)
+            print(slug)
+            print(slug)
+            print(slug)
+            print(slug)
+            print(slug)
+            instance = ImageModel.objects.get(image=slug.split('media/')[-1])
+
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+        except ImageModel.DoesNotExist:
+            return Response(
+                {"error": "Изображение не найдено"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
