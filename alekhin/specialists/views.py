@@ -17,7 +17,7 @@ class SpecialistViewSet(viewsets.ModelViewSet):
     filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['name', 'description', 'slug']
     filterset_class = SpecialistFilter
-    lookup_field = 'slug'
+    # lookup_field = 'id'
     pagination_class = None
     http_method_names = ['get', 'post', 'put', 'delete']
 
