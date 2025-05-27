@@ -37,7 +37,7 @@ class GoodViewSet(viewsets.ModelViewSet):
         return GoodSerializer
 
     def get_queryset(self):
-        queryset = Good.objects.all().select_related('image')
+        queryset = Good.objects.all()
         
         # Для неаутентифицированных пользователей показываем только активные товары
         if not self.request.user.is_authenticated:
