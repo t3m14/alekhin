@@ -42,7 +42,7 @@ class GoodCreateSerializer(serializers.ModelSerializer):
 
 
 class GoodSerializer(serializers.ModelSerializer):
-    image_data = ImageSerializer(source='image', read_only=True)
+    image_data = ImageSerializer(source='image', read_only=True, allow_null=True)
     
     class Meta:
         model = Good
@@ -89,7 +89,7 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
 
 class GoodListSerializer(serializers.ModelSerializer):
     """Упрощенный сериализатор для списка товаров"""
-    image_data = ImageSerializer(source='image', read_only=True)
+    image_data = ImageSerializer(source='image', read_only=True, allow_null=True)
     
     class Meta:
         model = Good
