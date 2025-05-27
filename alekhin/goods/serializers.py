@@ -4,6 +4,8 @@ from images.serializers import ImageSerializer
 
 
 class GoodCreateSerializer(serializers.ModelSerializer):
+    image = serializers.CharField(allow_null=True)
+    
     class Meta:
         model = Good
         fields = [
@@ -42,12 +44,12 @@ class GoodCreateSerializer(serializers.ModelSerializer):
 
 
 class GoodSerializer(serializers.ModelSerializer):
-    image_data = ImageSerializer(source='image', read_only=True, allow_null=True)
+    image = serializers.CharField(allow_null=True)
     
     class Meta:
         model = Good
         fields = [
-            'id', 'name', 'image', 'image_data', 'service_direction', 'article', 
+            'id', 'name', 'image', 'service_direction', 'article', 
             'price', 'description', 'sizes', 'product_care', 'important', 
             'contraindications', 'slug', 'enabled', 'created_at', 'updated_at'
         ]
@@ -55,6 +57,8 @@ class GoodSerializer(serializers.ModelSerializer):
 
 
 class GoodUpdateSerializer(serializers.ModelSerializer):
+    image = serializers.CharField(allow_null=True)
+    
     class Meta:
         model = Good
         fields = [
@@ -89,11 +93,11 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
 
 class GoodListSerializer(serializers.ModelSerializer):
     """Упрощенный сериализатор для списка товаров"""
-    image_data = ImageSerializer(source='image', read_only=True, allow_null=True)
+    image = serializers.CharField(allow_null=True)
     
     class Meta:
         model = Good
         fields = [
-            'id', 'name', 'image', 'image_data', 'service_direction', 
+            'id', 'name', 'image', 'service_direction', 
             'article', 'price', 'enabled', 'slug', 'created_at'
         ]

@@ -132,23 +132,6 @@ class ImageViewSet(viewsets.ModelViewSet):
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-    @swagger_auto_schema(
-        operation_description="Получение изображения по слагу",
-        manual_parameters=[
-            openapi.Parameter(
-                'slug',
-                openapi.IN_QUERY,
-                description='Слаг изображения',
-                type=openapi.TYPE_STRING,
-                required=True
-            )
-        ],
-        responses={
-            200: ImageSerializer,
-            400: "Слаг не указан",
-            404: "Изображение не найдено"
-        }
-    )
     def retrieve_by_slug(self, request, *args, **kwargs):
         """Получение изображения по слагу"""
         # получтиь слаг из тела запроса
@@ -160,6 +143,7 @@ class ImageViewSet(viewsets.ModelViewSet):
             )
         
         try:
+
             instance = ImageModel.objects.get(image=slug.split('media/')[-1])
 
             serializer = self.get_serializer(instance)
