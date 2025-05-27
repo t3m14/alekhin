@@ -6,7 +6,7 @@ from .models import Specialist
 from .serializers import SpecialistSerializer
 
 class SpecialistFilter(django_filters.FilterSet):
-    directions = django_filters.CharFilter(lookup_expr='icontains')
+    directions = django_filters.NumberFilter(field_name='directions', lookup_expr='in')  # или просто directions если это поле с ID
 
     class Meta:
         model = Specialist

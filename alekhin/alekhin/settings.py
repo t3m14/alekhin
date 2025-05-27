@@ -52,8 +52,28 @@ INSTALLED_APPS = [
     'images',
     'job_titles',
     'service_types',
-
+    'requests',
+    'tests',
+    'goods',
+    'items_count',
 ]
+
+# Настройки для кеширования счетчиков (опционально)
+ITEMS_COUNT_CACHE_TIMEOUT = 300  # 5 минут
+
+# Настройки кеша (если используете Redis)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'alekhin',
+        'TIMEOUT': 300,
+    }
+}
+
 
 # Настройки для медиа файлов
 import os
