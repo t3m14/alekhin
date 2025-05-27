@@ -3,9 +3,16 @@ from rest_framework import viewsets, filters, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django_filters import rest_framework as django_filters
+from rest_framework.pagination import PageNumberPagination
 from .models import Request
 from .serializers import RequestCreateSerializer, RequestSerializer, RequestUpdateSerializer
 from .filters import RequestFilter
+
+
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 
 class RequestViewSet(viewsets.ModelViewSet):
@@ -15,6 +22,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'name', 'is_new']
     ordering = ['-created_at']
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    pagination_class = CustomPagination
 
     def get_permissions(self):
         if self.action == 'create':

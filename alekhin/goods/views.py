@@ -3,11 +3,16 @@ from rest_framework import viewsets, filters, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django_filters import rest_framework as django_filters
+from rest_framework.pagination import PageNumberPagination
 from .models import Good
 from .serializers import (
     GoodCreateSerializer, GoodSerializer, GoodUpdateSerializer, GoodListSerializer
 )
 from .filters import GoodFilter
+
+
+class CustomPagination(PageNumberPagination):
+    page_size = 10
 
 
 class GoodViewSet(viewsets.ModelViewSet):
@@ -21,6 +26,7 @@ class GoodViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
     lookup_field = 'slug'
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    pagination_class = CustomPagination
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:

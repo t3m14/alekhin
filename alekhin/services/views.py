@@ -9,6 +9,12 @@ from django_filters import rest_framework as django_filters
 from .serializers import *
 from .filters import ServiceFilter
 from django.db.models import Q
+from rest_framework.pagination import PageNumberPagination
+
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all().order_by('-created_at')
@@ -18,6 +24,8 @@ class ServiceViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description', 'slug']
     lookup_field = 'slug'
     read_only_fields = ['created_at', 'slug']
+    pagination_class = CustomPagination
+
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsAuthenticated()]
@@ -47,4 +55,3 @@ class ServiceViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(service_type_id=service_type_id)
 
         return queryset
-    
