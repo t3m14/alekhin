@@ -5,9 +5,9 @@ from specialists.models import Specialist
 
 class Request(models.Model):
     # Основная информация
-    name = models.CharField(max_length=255, verbose_name="Имя")
+    name = models.CharField(max_length=255, verbose_name="Имя", required=True)
     email = models.EmailField(validators=[EmailValidator()], verbose_name="Email")
-    phone = models.CharField(max_length=20, blank=True, verbose_name="Телефон")
+    phone = models.CharField(max_length=20, verbose_name="Телефон", reqired=True)
     
     # Типы заявок
     is_service = models.BooleanField(default=False, verbose_name="Медицинская услуга")

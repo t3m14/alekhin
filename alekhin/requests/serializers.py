@@ -23,10 +23,10 @@ class RequestCreateSerializer(serializers.ModelSerializer):
         
         return data
     
-    def validate_email(self, value):
-        if not value or not value.strip():
-            raise serializers.ValidationError("Email не может быть пустым")
-        return value.strip()
+    # def validate_email(self, value):
+    #     if not value or not value.strip():
+    #         raise serializers.ValidationError("Email не может быть пустым")
+    #     return value.strip()
     def validate_phone(self, value):
         if not value or not value.strip():
             raise serializers.ValidationError("Телефон не может быть пустым")
