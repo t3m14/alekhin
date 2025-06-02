@@ -79,7 +79,18 @@ class RequestViewSet(viewsets.ModelViewSet):
         response['Total-Count'] = str(total_count)
         response['New-Count'] = str(new_count)
         response['Access-Control-Expose-Headers'] = 'Total-Count, New-Count'
-        
+        service_direction = self.request.query_params.get('service_direction', None)
+        is_service = self.request.query_params.get('is_service', None)
+        is_goods = self.request.query_params.get('is_goods', None)
+        is_analysis = self.request.query_params.get('is_analysis', None)
+        if is_analysis:
+            queryset = queryset.filter(is_analysis=bool(is_analysis))
+        if is_goods:
+            queryset = queryset.filter(is_goods=bool(is_goods))
+        if is_service:
+            queryset = queryset.filter(is_service=bool(is_service))
+        if service_direction:
+            queryset = queryset.filter(service_direction=str(service_direction))
         return response
 
     def create(self, request, *args, **kwargs):
