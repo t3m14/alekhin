@@ -42,7 +42,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 Q(description__icontains=search_query) |
                 Q(service_direction__icontains=search_query) |
                 Q(service_type__icontains=search_query) |
-                Q(specialists__name__icontains=search_query)
+                Q(job_titles__name__icontains=search_query)
             ).distinct()
 
         # Filtering
