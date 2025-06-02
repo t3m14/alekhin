@@ -41,7 +41,7 @@ class SpecialistViewSet(viewsets.ModelViewSet):
                 direction_id = int(direction_id)
                 queryset = queryset.filter(directions__contains=[direction_id])
             except (ValueError, TypeError):
-                pass
+                return  Response({'error': 'Invalid direction ID'}, status=status.HTTP_400_BAD_REQUEST)
                 
         if directions_id:
             try:
@@ -51,6 +51,6 @@ class SpecialistViewSet(viewsets.ModelViewSet):
                 if not self.request.user.is_authenticated:
                     queryset = queryset.filter(is_reliable=True)
             except (ValueError, TypeError):
-                pass
+                return  Response({'error': 'Invalid directions ID'}, status=status.HTTP_400_BAD_REQUEST)
 
         return queryset.distinct()
