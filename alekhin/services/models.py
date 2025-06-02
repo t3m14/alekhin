@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
 from django.utils import timezone
-from specialists.models import Specialist
 import re
 
 class Service(models.Model):

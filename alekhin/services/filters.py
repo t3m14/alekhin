@@ -7,12 +7,12 @@ class ServiceFilter(filters.FilterSet):
     description = filters.CharFilter(lookup_expr='icontains')
     service_direction = filters.CharFilter(lookup_expr='exact')
     service_type = filters.CharFilter(lookup_expr='exact')
-    specialists = filters.ModelMultipleChoiceFilter(
-        field_name='specialists',
+    job_titles = filters.ModelMultipleChoiceFilter(
+        field_name='job_titles',
         queryset=Service.objects.all(),
         to_field_name='id'
     )
 
     class Meta:
         model = Service
-        fields = ['name', 'description', 'service_direction', 'service_type', 'specialists']
+        fields = ['name', 'description', 'service_direction', 'service_type', 'job_titles']

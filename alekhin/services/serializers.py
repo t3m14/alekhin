@@ -8,7 +8,7 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'price', 'main_image', 'procedure_number',
             'procedure_duration', 'rehab_duration', 'description',
-            'service_direction', 'service_type', 'specialists',
+            'service_direction', 'service_type', 'job_titles',
             'readings', 'contraindications', 'devices', 'need_to_have',
             'images', 'serts', 'is_popular', 'slug',
             'created_at'
