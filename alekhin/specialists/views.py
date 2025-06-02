@@ -14,8 +14,8 @@ class SpecialistViewSet(viewsets.ModelViewSet):
     filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
     filterset_class = SpecialistFilter
     search_fields = ['name', 'description']
-    # lookup_field = 'slug'
-
+    # Убираем lookup_field если не нужен
+    
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsAuthenticated()]
@@ -24,33 +24,39 @@ class SpecialistViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         
-        # Убираем фильтрацию по is_reliable (пункт 19)
-        # if not self.request.user.is_authenticated:
-        #     queryset = queryset.filter(is_reliable=True)
-        
         # Фильтрация по enabled для неавторизованных пользователей
         if not self.request.user.is_authenticated:
             queryset = queryset.filter(enabled=True)
         
-        # Исправляем фильтрацию по направлениям
-        direction_id = self.request.query_params.get('direction', None)
-        directions_id = self.request.query_params.get('directions', None)
+        # Фильтрация по направлениям
+        direction_id = self.request.query_params.get('direction')
+        directions_id = self.request.query_params.get('directions')
         
-        if direction_id:
+        target_direction = direction_id or directions_id
+        
+        if target_direction:
             try:
-                direction_id = int(direction_id)
-                queryset = queryset.filter(directions__contains=[direction_id])
-            except (ValueError, TypeError):
-                return  Response({'error': 'Invalid direction ID'}, status=status.HTTP_400_BAD_REQUEST)
+                target_direction = str(target_direction).rstrip('/')
+                direction_int = int(target_direction)
                 
-        if directions_id:
-            try:
-                directions_id = int(directions_id)
-                queryset = queryset.filter(directions__contains=[direction_id])
-                # Если есть фильтрация по направлениям, то фильтруем по is_reliable
+                print(f"Filtering by direction: {direction_int}")
+                
+                # Попробуйте разные варианты в зависимости от структуры данных
+                # Вариант 1: Если directions хранится как строка JSON
+                # queryset = queryset.filter(directions__icontains=f'"{direction_int}"')
+                
+                # Вариант 2: Если это PostgreSQL с JSONField
+                # queryset = queryset.filter(directions__overlap=[str(direction_int)])
+                
+                # Вариант 3: Если это массив строк в JSON
+                queryset = queryset.filter(directions__icontains=str(direction_int))
+                
                 if not self.request.user.is_authenticated:
                     queryset = queryset.filter(is_reliable=True)
-            except (ValueError, TypeError):
-                return  Response({'error': 'Invalid directions ID'}, status=status.HTTP_400_BAD_REQUEST)
+                    
+            except (ValueError, TypeError) as e:
+                print(f"Error parsing direction: {e}")
+                return queryset.none()
 
+        print(f"Final queryset count: {queryset.count()}")
         return queryset.distinct()

@@ -1,10 +1,8 @@
-from django.db.models import Q
 from django_filters import rest_framework as filters
 from .models import Specialist
 
 class SpecialistFilter(filters.FilterSet):
-    directions = filters.NumberFilter(field_name='directions', lookup_expr='in')
-
+    # Убираем directions отсюда, будем фильтровать в get_queryset
     class Meta:
         model = Specialist
-        fields = ['directions']
+        fields = []  # Или другие поля, кроме directions
