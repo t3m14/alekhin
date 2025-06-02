@@ -52,3 +52,4 @@ class Request(models.Model):
         # Если выбрана услуга, проверяем обязательные поля
         if self.is_service and not self.service_name:
             raise ValidationError("Для медицинской услуги необходимо указать название")
+    
