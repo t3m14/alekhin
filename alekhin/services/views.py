@@ -33,7 +33,18 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        
+        # filter by job_titles
+        job_titles = self.request.query_params.get('job_titles', None)
+        if job_titles:
+            queryset = queryset.filter(job_titles__in=job_titles.split(','))
+        # filter by service_type
+        service_type = self.request.query_params.get('service_type', None)
+        if service_type:
+            queryset = queryset.filter(service_type=service_type)
+        # filter by service_direction
+        service_direction = self.request.query_params.get('service_direction', None)
+        if service_direction:
+            queryset = queryset.filter(service_direction=service_direction)
         # Smart search
         search_query = self.request.query_params.get('search', None)
         if search_query:
