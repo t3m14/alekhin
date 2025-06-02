@@ -1,18 +1,24 @@
-from django.urls import path
-from django_filters import rest_framework as filters
+import django_filters
+from django.db.models import Q
 from .models import Service
 
-class ServiceFilter(filters.FilterSet):
-    name = filters.CharFilter(lookup_expr='icontains')
-    description = filters.CharFilter(lookup_expr='icontains')
-    service_direction = filters.CharFilter(lookup_expr='exact')
-    service_type = filters.CharFilter(lookup_expr='exact')
-    job_titles = filters.ModelMultipleChoiceFilter(
-        field_name='job_titles',
-        queryset=Service.objects.all(),
-        to_field_name='id'
-    )
+class ServiceFilter(django_filters.FilterSet):
+    service_direction = django_filters.CharFilter(method='filter_service_direction')
+    service_type = django_filters.CharFilter(method='filter_service_type')
+    job_title = django_filters.CharFilter(method='filter_job_title')
+    
+    def filter_service_direction(self, queryset, name, value):
+        """Фильтр по service_direction JSON полю"""
+        return queryset.filter(service_direction__icontains=value)
+    
+    def filter_service_type(self, queryset, name, value):
+        """Фильтр по service_type JSON полю"""
+        return queryset.filter(service_type__icontains=value)
+    
+    def filter_job_title(self, queryset, name, value):
+        """Фильтр по job_titles JSON полю"""
+        return queryset.filter(job_titles__icontains=value)
 
     class Meta:
         model = Service
-        fields = ['name', 'description', 'service_direction', 'service_type', 'job_titles']
+        fields = ['service_direction', 'service_type', 'job_title']

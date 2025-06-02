@@ -42,16 +42,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 Q(description__icontains=search_query) |
                 Q(service_direction__icontains=search_query) |
                 Q(service_type__icontains=search_query) |
-                Q(job_titles__name__icontains=search_query)
+                Q(job_titles__icontains=search_query)
             ).distinct()
-
-        # Filtering
-        service_direction_id = self.request.query_params.get('service_direction', None)
-        if service_direction_id:
-            queryset = queryset.filter(service_direction_id=service_direction_id)
-
-        service_type_id = self.request.query_params.get('service_type', None)
-        if service_type_id:
-            queryset = queryset.filter(service_type_id=service_type_id)
 
         return queryset
