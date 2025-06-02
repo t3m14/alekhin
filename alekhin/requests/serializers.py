@@ -14,8 +14,8 @@ class RequestCreateSerializer(serializers.ModelSerializer):
     
     def validate(self, data):
         # Проверяем, что выбран хотя бы один тип заявки
-        if not any([data.get('is_service'), data.get('is_goods'), data.get('is_analysis')]):
-            raise serializers.ValidationError("Необходимо выбрать хотя бы один тип заявки")
+        # if not any([data.get('is_service'), data.get('is_goods'), data.get('is_analysis')]):
+        #     raise serializers.ValidationError("Необходимо выбрать хотя бы один тип заявки")
         
         # Если выбрана услуга, проверяем обязательные поля
         if data.get('is_service') and not data.get('service_name'):
@@ -27,7 +27,10 @@ class RequestCreateSerializer(serializers.ModelSerializer):
         if not value or not value.strip():
             raise serializers.ValidationError("Email не может быть пустым")
         return value.strip()
-    
+    def validate_phone(self, value):
+        if not value or not value.strip():
+            raise serializers.ValidationError("Телефон не может быть пустым")
+        return value.strip()
     def validate_name(self, value):
         if not value or not value.strip():
             raise serializers.ValidationError("Имя не может быть пустым")
