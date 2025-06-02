@@ -85,7 +85,10 @@ class GoodViewSet(viewsets.ModelViewSet):
         response['Total-Count'] = str(total_count)
         response['Enabled-Count'] = str(enabled_count)
         response['Access-Control-Expose-Headers'] = 'Total-Count, Enabled-Count'
-        
+        service_direction = self.request.query_params.get('service_direction', None)
+        # Получаем общее количество анализов
+        if service_direction:
+            queryset = queryset.filter(service_direction=str(service_direction))
         return response
 
     def create(self, request, *args, **kwargs):

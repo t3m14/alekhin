@@ -63,9 +63,9 @@ class TestViewSet(viewsets.ModelViewSet):
         """GET /tests - получение списка анализов"""
         queryset = self.filter_queryset(self.get_queryset())
         service_direction = self.request.query_params.get('service_direction', None)
-        if service_direction:
-            queryset = queryset.filter(service_direction=str(service_direction))   
         # Получаем общее количество анализов
+        if service_direction:
+            queryset = queryset.filter(service_direction=str(service_direction))
         total_count = queryset.count()
         enabled_count = queryset.filter(enabled=True).count()
         
