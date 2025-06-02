@@ -62,9 +62,9 @@ class TestListSerializer(serializers.ModelSerializer):
     """Упрощенный сериализатор для списка анализов"""
     class Meta:
         model = Test
-        fields = [
-            'id', 'name', 'service_direction', 'price', 'time', 
-            'enabled', 'slug', 'created_at'
+        fields =['id', 'name', 'service_direction', 'price', 'nomenclature', 'method', 
+            'time', 'characteristic', 'rules', 'readings', 'contraindications', 
+            'depends_to', 'enabled', 'slug', 'created_at', 'updated_at'
         ]
 from rest_framework import serializers
 from .models import Test
@@ -130,7 +130,7 @@ class TestListSerializer(serializers.ModelSerializer):
     """Упрощенный сериализатор для списка анализов"""
     class Meta:
         model = Test
-        fields = [
-            'id', 'name', 'service_direction', 'price', 'time', 
-            'enabled', 'slug', 'created_at'
+        fields = ['id', 'name', 'service_direction', 'price', 'nomenclature', 'method', 
+            'time', 'characteristic', 'rules', 'readings', 'contraindications', 
+            'depends_to', 'enabled', 'slug', 'created_at', 'updated_at'
         ]
