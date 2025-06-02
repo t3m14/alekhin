@@ -10,8 +10,8 @@ class ServiceAdmin(admin.ModelAdmin):
     list_per_page = 25
     ordering = ('-created_at',)
     readonly_fields = ('created_at',)
-    def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related('job_titles')
+    # def get_queryset(self, request):
+    #     return super().get_queryset(request).prefetch_related('job_titles')
 
 
 

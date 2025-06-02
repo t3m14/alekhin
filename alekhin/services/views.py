@@ -41,8 +41,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 Q(name__icontains=search_query) |
                 Q(description__icontains=search_query) |
                 Q(service_direction__icontains=search_query) |
-                Q(service_type__icontains=search_query) |
-                Q(job_titles__icontains=search_query)
+                Q(service_type__icontains=search_query)
             ).distinct()
 
         return queryset
