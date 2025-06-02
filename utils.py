@@ -33,7 +33,7 @@ types = [
 ]
 
 url = "http://37.230.112.207:8000/service_types/"
-token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ4ODU5MDIzLCJpYXQiOjE3NDg4NTU0MjMsImp0aSI6ImY4NjdkZGZjNzk5ZDQ4ODI4ZDNjZmVkNDNlYjZkMDc3IiwidXNlcl9pZCI6MX0.re1OB32jsqP5g-rUWkFBhQYkIe3JzmfeVVti-jMNZ3U'
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ4ODYyODUyLCJpYXQiOjE3NDg4NTkyNTIsImp0aSI6ImE5Nzg5NTM5YzY4MDQ2MGZiZjQ4YTczNjNlMmI0ZjZjIiwidXNlcl9pZCI6MX0.ke6r82xSvj-Ae5e9Uajx7lMqj4SAPPS3QV3YHtDInaY'
 for type in types:
     data = {
         "name": type
