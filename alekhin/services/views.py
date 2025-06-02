@@ -45,10 +45,6 @@ class ServiceViewSet(viewsets.ModelViewSet):
         # filter by service_direction
         service_direction = self.request.query_params.get('service_direction', None)
         if service_direction:
-
-            queryset = queryset.filter(service_direction=str(service_direction))
-            self.pagination_class = None
-
             queryset = queryset.filter(service_direction=str(service_direction))        # Smart search
         search_query = self.request.query_params.get('search', None)
         if search_query:
