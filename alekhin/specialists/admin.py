@@ -9,6 +9,3 @@ class SpecialistAdmin(admin.ModelAdmin):
     search_fields = ('name', 'image')
     list_editable = ('image',)
     list_per_page = 25
-    def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related('services')
-    

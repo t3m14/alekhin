@@ -121,16 +121,29 @@ class ImageViewSet(viewsets.ModelViewSet):
     )
     def destroy(self, request, *args, **kwargs):
         """Удаление изображения"""
-        instance = self.get_object()
-        
-        # Удаляем файлы с диска
-        if instance.image:
-            instance.image.delete(save=False)
-        if instance.cropped_image:
-            instance.cropped_image.delete(save=False)
+        try:
+            slug = request.data.get('slug', None)
+            if not slug:
+                return Response(
+                    {"error": "Слаг не указан"}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+                
+            instance = ImageModel.objects.get(image=slug.split('media/')[-1])
             
-        instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            # Удаляем файлы с диска
+            if instance.image:
+                instance.image.delete(save=False)
+            if instance.cropped_image:
+                instance.cropped_image.delete(save=False)
+                
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ImageModel.DoesNotExist:
+            return Response(
+                {"error": "Изображение не найдено"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
     
     def retrieve_by_slug(self, request, *args, **kwargs):
         """Получение изображения по слагу"""
@@ -143,9 +156,7 @@ class ImageViewSet(viewsets.ModelViewSet):
             )
         
         try:
-
             instance = ImageModel.objects.get(image=slug.split('media/')[-1])
-
             serializer = self.get_serializer(instance)
             return Response(serializer.data)
         except ImageModel.DoesNotExist:

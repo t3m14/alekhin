@@ -184,3 +184,26 @@ def goods_count(request):
     result = ItemCountService.get_count_for_endpoint('/goods/', user=request.user)
     return Response(result, status=status.HTTP_200_OK)
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Получить количество заявок",
+    responses={200: ItemCountResponseSerializer, 401: "Unauthorized"}
+)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def requests_count(request):
+    """Получить количество заявок"""
+    result = ItemCountService.get_count_for_endpoint('/requests/', user=request.user)
+    return Response(result, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(
+    method='get',
+    operation_description="Получить количество типов услуг",
+    responses={200: ItemCountResponseSerializer, 401: "Unauthorized"}
+)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def service_types_count(request):
+    """Получить количество типов услуг"""
+    result = ItemCountService.get_count_for_endpoint('/service_types/', user=request.user)
+    return Response(result, status=status.HTTP_200_OK)

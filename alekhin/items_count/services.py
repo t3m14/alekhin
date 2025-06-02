@@ -15,6 +15,7 @@ class ItemCountService:
         '/job_titles/': ('job_titles', 'JobTitle'),
         '/tests/': ('tests', 'Test'),
         '/goods/': ('goods', 'Good'),
+        '/requests/': ('requests', 'Request'),
         # Можно легко добавлять новые эндпойнты
     }
     

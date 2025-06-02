@@ -11,9 +11,7 @@ class Good(models.Model):
     image = models.CharField(max_length=255, blank=True, null=True, verbose_name="Изображение товара")
     service_direction = models.PositiveIntegerField(verbose_name="ID направления услуги")
     article = models.CharField(max_length=100, verbose_name="Артикул")
-    price = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
+    price = models.IntegerField(
         validators=[MinValueValidator(0)],
         verbose_name="Цена"
     )

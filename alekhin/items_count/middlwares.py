@@ -17,6 +17,8 @@ class ItemCountCacheMiddleware(MiddlewareMixin):
         r'^/api/job_titles/',
         r'^/api/tests/',
         r'^/api/goods/',
+        r'^/api/service_types/',
+        r'^/api/requests/',
     ]
     
     def process_response(self, request, response):

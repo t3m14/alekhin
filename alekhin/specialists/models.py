@@ -5,7 +5,7 @@ class Specialist(models.Model):
     image = models.CharField(max_length=255)
     directions = models.JSONField(default=list)
     titles = models.JSONField(default=list)
-    # experience = models.IntegerField()
+    experience = models.IntegerField()
     is_reliable = models.BooleanField(default=False)
     degree = models.CharField(max_length=255, null=True, blank=True)
     education = models.CharField(max_length=255, null=True, blank=True)

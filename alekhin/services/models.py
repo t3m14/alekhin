@@ -6,7 +6,7 @@ import re
 
 class Service(models.Model):
     name = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    price = models.IntegerField(null=True, blank=True)
     main_image = models.CharField(max_length=255)
     procedure_number = models.IntegerField()
     procedure_duration = models.CharField(max_length=100, null=True, blank=True)

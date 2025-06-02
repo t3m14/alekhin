@@ -1,25 +1,20 @@
-from django.db.models import Q
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as django_filters
+from django.db.models import Q
 from .models import Specialist
 from .serializers import SpecialistSerializer
-
-class SpecialistFilter(django_filters.FilterSet):
-    directions = django_filters.NumberFilter(field_name='directions', lookup_expr='in')  # или просто directions если это поле с ID
-
-    class Meta:
-        model = Specialist
-        fields = ['directions']
+from .filters import SpecialistFilter
 
 class SpecialistViewSet(viewsets.ModelViewSet):
+    queryset = Specialist.objects.all()
     serializer_class = SpecialistSerializer
     filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ['name', 'description', 'slug']
     filterset_class = SpecialistFilter
-    # lookup_field = 'id'
-    pagination_class = None
-    http_method_names = ['get', 'post', 'put', 'delete']
+    search_fields = ['name', 'description']
+    lookup_field = 'slug'
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
@@ -27,23 +22,35 @@ class SpecialistViewSet(viewsets.ModelViewSet):
         return []
 
     def get_queryset(self):
-        queryset = Specialist.objects.all().order_by('id')
-    
-        # Filter by is_reliable for non-authenticated users
+        queryset = super().get_queryset()
+        
+        # Убираем фильтрацию по is_reliable (пункт 19)
+        # if not self.request.user.is_authenticated:
+        #     queryset = queryset.filter(is_reliable=True)
+        
+        # Фильтрация по enabled для неавторизованных пользователей
         if not self.request.user.is_authenticated:
-            queryset = queryset.filter(is_reliable=True)
+            queryset = queryset.filter(enabled=True)
+        
+        # Исправляем фильтрацию по направлениям
+        direction_id = self.request.query_params.get('direction', None)
+        directions_id = self.request.query_params.get('directions', None)
+        
+        if direction_id:
+            try:
+                direction_id = int(direction_id)
+                queryset = queryset.filter(directions__contains=[direction_id])
+            except (ValueError, TypeError):
+                pass
+                
+        if directions_id:
+            try:
+                directions_id = int(directions_id)
+                queryset = queryset.filter(directions__contains=[direction_id])
+                # Если есть фильтрация по направлениям, то фильтруем по is_reliable
+                if not self.request.user.is_authenticated:
+                    queryset = queryset.filter(is_reliable=True)
+            except (ValueError, TypeError):
+                pass
 
-        # Smart search
-        search_query = self.request.query_params.get('search', None)
-        if search_query:
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(specialization__icontains=search_query) |
-                Q(readings__icontains=search_query) |
-                Q(contraindications__icontains=search_query) |
-                Q(devices__icontains=search_query) |
-                Q(need_to_have__icontains=search_query)
-            ).distinct()
-
-        return queryset
+        return queryset.distinct()
