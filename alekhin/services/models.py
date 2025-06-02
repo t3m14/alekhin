@@ -14,7 +14,7 @@ class Service(models.Model):
     description = models.TextField(null=True, blank=True)
     service_direction = models.IntegerField(null=True, blank=True)
     service_type = models.IntegerField(null=True, blank=True)
-    specialists = models.JSONField(default=list)  # List of Specialist IDs
+    job_titles = models.JSONField(default=list)  # List of Specialist IDs
     readings = models.TextField(null=True, blank=True)
     contraindications = models.TextField(null=True, blank=True)
     devices = models.TextField(null=True, blank=True)
