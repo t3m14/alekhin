@@ -122,9 +122,9 @@ class ImageViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         """Удаление изображения"""
         try:
-            slug = request.data.get('slug', None)
+            slug = request.query_params.get('slug', None)
             if not slug:
-                return Response(
+                 return Response(
                     {"error": "Слаг не указан"}, 
                     status=status.HTTP_400_BAD_REQUEST
                 )
