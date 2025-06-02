@@ -8,6 +8,6 @@ class Specialist(models.Model):
     experience = models.IntegerField()
     is_reliable = models.BooleanField(default=False)
     degree = models.CharField(max_length=255, null=True, blank=True)
-    education = models.CharField(max_length=255, null=True, blank=True)
+    # education = models.CharField(max_length=255, null=True, blank=True)
     biography = models.TextField(null=True, blank=True)
     serts = models.JSONField(default=list)
