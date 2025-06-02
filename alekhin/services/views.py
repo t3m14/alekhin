@@ -36,7 +36,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
         # filter by job_titles
         job_titles = self.request.query_params.get('job_titles', None)
         if job_titles:
-            queryset = queryset.filter(job_titles__icontains=job_titles.rstrip('/'))
+            queryset = queryset.filter(job_titles__icontains=str(job_titles).rstrip('/'))
 
         # filter by service_type
         service_type = self.request.query_params.get('service_type', None)
