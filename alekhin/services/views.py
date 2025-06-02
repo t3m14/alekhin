@@ -36,16 +36,16 @@ class ServiceViewSet(viewsets.ModelViewSet):
         # filter by job_titles
         job_titles = self.request.query_params.get('job_titles', None)
         if job_titles:
-            queryset = queryset.filter(job_titles__icontains=str(job_titles).rstrip('/'))
+            queryset = queryset.filter(job_titles=str(job_titles).rstrip('/'))
 
         # filter by service_type
         service_type = self.request.query_params.get('service_type', None)
         if service_type:
-            queryset = queryset.filter(service_type__icontains=str(service_type))
+            queryset = queryset.filter(service_type=str(service_type))
         # filter by service_direction
         service_direction = self.request.query_params.get('service_direction', None)
         if service_direction:
-            queryset = queryset.filter(service_direction__icontains=str(service_direction))        # Smart search
+            queryset = queryset.filter(service_direction=str(service_direction))        # Smart search
         search_query = self.request.query_params.get('search', None)
         if search_query:
             queryset = queryset.filter(
