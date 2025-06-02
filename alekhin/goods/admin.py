@@ -16,10 +16,9 @@ class GoodAdmin(admin.ModelAdmin):
         'important', 'contraindications'
     )
     list_editable = ('enabled', 'price')
-    readonly_fields = ('slug', 'created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
     list_per_page = 25
-    prepopulated_fields = {'slug': ('name',)}
     
     fieldsets = (
         ('Основная информация', {
@@ -34,7 +33,7 @@ class GoodAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
         ('Служебная информация', {
-            'fields': ('slug', 'created_at', 'updated_at'),
+            'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         }),
     )
