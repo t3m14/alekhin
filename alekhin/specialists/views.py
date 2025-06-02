@@ -14,7 +14,7 @@ class SpecialistViewSet(viewsets.ModelViewSet):
     filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
     filterset_class = SpecialistFilter
     search_fields = ['name', 'description']
-    lookup_field = 'slug'
+    # lookup_field = 'slug'
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
