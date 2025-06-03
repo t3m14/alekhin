@@ -6,7 +6,7 @@ COPY requirements.txt /app/
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code into the container
-COPY . /app/
+COPY . .
 # Expose the port the app runs on
 EXPOSE 8000
 # Set the environment variable for Django settings
