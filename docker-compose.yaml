@@ -29,7 +29,7 @@ services:
       context: ./alekhin-clinic_frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3002:3000"
 
 volumes:
   data:
