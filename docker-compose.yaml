@@ -13,7 +13,7 @@ services:
       - ./media:/app/media
       - ./config:/app/config
       - ./db.sqlite3:/app/
-/  admin:
+  admin:
     image: admin:latest
     container_name: admin
     build:
