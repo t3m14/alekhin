@@ -4,7 +4,7 @@ services:
     image: backend:latest
     container_name: backend
     build:
-      context: .
+      context: alekhin
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
