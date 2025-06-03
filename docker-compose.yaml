@@ -12,7 +12,6 @@ services:
       - ./data:/app/data
       - ./media:/app/media
       - ./config:/app/config
-      - ./db.sqlite3:/app/db.sqlite3
       - ./alekhin:/app
   admin:
     image: admin:latest
@@ -30,3 +29,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+
+volumes:
+  backend_data:
+    - ./data:/app/data
+    - ./media:/app/media
+    - ./config:/app/config
+    - ./alekhin:/app
+    - ./db.sqlite3:/app/db.sqlite3
