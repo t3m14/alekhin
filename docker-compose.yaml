@@ -13,7 +13,7 @@ services:
       - ./media:/app/media
       - ./config:/app/config
       - ./alekhin:/app
-      - ./db.sqlite3:/app/db.sqlite3
+      # - ./db.sqlite3:/app/db.sqlite3
   admin:
     image: admin:latest
     container_name: admin
