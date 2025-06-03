@@ -12,9 +12,8 @@ services:
       - ./data:/app/data
       - ./media:/app/media
       - ./config:/app/config
-      - ./db.sqlite3:/app/db.sqlite3
-      - /root/alekhin/db.sqlite3:/app/data/db.sqlite3  # Correct path
-  admin:
+      - ./db.sqlite3:/app/
+/  admin:
     image: admin:latest
     container_name: admin
     build:
