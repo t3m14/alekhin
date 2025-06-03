@@ -1,0 +1,6 @@
+[submodule "alekhin-clinic_frontend"]
+	path = alekhin-clinic_frontend
+	url = https://github.com/Visual-Sense-Lab-Team/alekhin-clinic_frontend
+[submodule "alekhin-clinic_admin_frontend"]
+	path = alekhin-clinic_admin_frontend
+	url = https://github.com/Visual-Sense-Lab-Team/alekhin-clinic_admin_frontend
