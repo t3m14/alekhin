@@ -11,8 +11,7 @@ COPY . /app/
 EXPOSE 8000
 # Set the environment variable for Django settings
 ENV DJANGO_SETTINGS_MODULE=alekhin.settings
+# Create necessary directories
+RUN mkdir -p /app/data /app/media /app/config
 # Run the Django development server
-RUN python manage.py makemigrations && \
-    python manage.py migrate
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-# Use the default command to start the application
+CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
