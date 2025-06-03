@@ -45,23 +45,12 @@ class Good(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = self.generate_unique_slug()
+            from django.utils.text import slugify
+            from unidecode import unidecode
+            self.slug = slugify(unidecode(self.name))
         super().save(*args, **kwargs)
+
     
-    def generate_unique_slug(self):
-        """Генерирует уникальный slug для товара"""
-        base_slug = slugify(self.name, allow_unicode=True)
-        if not base_slug:
-            base_slug = f"good-{uuid.uuid4().hex[:8]}"
-        
-        slug = base_slug
-        counter = 1
-        
-        while Good.objects.filter(slug=slug).exists():
-            slug = f"{base_slug}-{counter}"
-            counter += 1
-        
-        return slug
     
     def clean(self):
         from django.core.exceptions import ValidationError
