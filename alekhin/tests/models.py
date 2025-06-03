@@ -10,9 +10,10 @@ class Test(models.Model):
     # Основная информация
     name = models.CharField(max_length=255, verbose_name="Название анализа")
     service_direction = models.PositiveIntegerField(verbose_name="ID направления услуги")
-    price = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
+
+
+
+    price = models.IntegerField(
         validators=[MinValueValidator(0)],
         verbose_name="Стоимость анализа"
     )
