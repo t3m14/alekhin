@@ -49,7 +49,8 @@ class ServiceViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(service_direction__iexact=service_direction)
 
         # Smart search
-        search_query = self.request.query_params.get('search', None)        if search_query:
+        search_query = self.request.query_params.get('search', None)        
+        if search_query:
             queryset = queryset.filter(
                 Q(name__icontains=search_query) |
                 Q(description__icontains=search_query) |
