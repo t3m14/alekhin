@@ -24,6 +24,6 @@ class SpecialistViewSet(viewsets.ModelViewSet):
         directions = self.request.query_params.get('direction', None)
 
         if directions:
-            queryset = queryset.filter(directions=str(directions))
+            queryset = queryset.filter(directions__ixeact=str(directions))
             
         return queryset.distinct()
