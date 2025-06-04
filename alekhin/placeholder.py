@@ -38,7 +38,8 @@ def get_token():
         "username": "admin@admin.admin",
         "password": "admin"
     }
-    response = requests.post(url + "/token/", data=data)
+
+    response = requests.request("POST", url + "/token/", data=data)
     return response.json()["access"]
 
 for type in types:
