@@ -48,6 +48,6 @@ for type in types:
     headers = {
         'Authorization': f'Bearer {get_token()}'
     }
-    response = requests.post(url + "/service_types", json=data, headers=headers)
+    response = requests.request("POST", url + "/service_types", json=data, headers=headers)
     print(response.status_code)
     print(response.json())
