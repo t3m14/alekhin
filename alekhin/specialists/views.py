@@ -2,18 +2,23 @@ from rest_framework import viewsets, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django_filters import rest_framework as django_filters
+# Remove this import if not using DjangoFilterBackend
+# from django_filters import rest_framework as django_filters
 from django.db.models import Q
 from .models import Specialist
 from .serializers import SpecialistSerializer
-from .filters import SpecialistFilter
+# Remove this import if not using the filter class
+# from .filters import SpecialistFilter
 
 class SpecialistViewSet(viewsets.ModelViewSet):
     queryset = Specialist.objects.all()
     serializer_class = SpecialistSerializer
-    filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
-    filterset_class = SpecialistFilter
+    # Only keep SearchFilter since you have custom filtering logic
+    filter_backends = [filters.SearchFilter]
+    # Remove this line
+    # filterset_class = SpecialistFilter
     search_fields = ['name', 'description']
+    template_name = 'rest_framework/filters/django_filters_form.html'
     # Убираем lookup_field если не нужен
     
     def get_permissions(self):
@@ -59,4 +64,5 @@ class SpecialistViewSet(viewsets.ModelViewSet):
                 return queryset.none()
 
         print(f"Final queryset count: {queryset.count()}")
+
         return queryset.distinct()
