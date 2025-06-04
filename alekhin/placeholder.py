@@ -31,16 +31,23 @@ types = [
     "Малые гинекологические процедуры",
     'Консультации и диагностика',
 ]
+url = "http://212.109.219.203:8000"
 
-url = "http://37.230.112.207:8000/service_types/"
-token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ4ODYyODUyLCJpYXQiOjE3NDg4NTkyNTIsImp0aSI6ImE5Nzg5NTM5YzY4MDQ2MGZiZjQ4YTczNjNlMmI0ZjZjIiwidXNlcl9pZCI6MX0.ke6r82xSvj-Ae5e9Uajx7lMqj4SAPPS3QV3YHtDInaY'
+def get_token():
+    data = {
+        "username": "admin@admin.admin",
+        "password": "admin"
+    }
+    response = requests.post(url + "/token/", data=data)
+    return response.json()["access"]
+
 for type in types:
     data = {
         "name": type
     }
     headers = {
-        'Authorization': f'Bearer {token}'
+        'Authorization': f'Bearer {get_token()}'
     }
-    response = requests.post(url, json=data, headers=headers)
+    response = requests.post(url + "/service_types", json=data, headers=headers)
     print(response.status_code)
     print(response.json())
