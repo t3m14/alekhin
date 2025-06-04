@@ -54,6 +54,8 @@ class GoodViewSet(viewsets.ModelViewSet):
         # Smart search
         search_query = self.request.query_params.get('search', None)
         if search_query:
+            search_query = search_query.strip()
+            search_query =  search_query.lower()
             queryset = queryset.filter(
                 Q(name__icontains=search_query) |
                 Q(article__icontains=search_query) |

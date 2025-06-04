@@ -24,9 +24,9 @@ class SpecialistViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         
-        # Фильтрация по enabled для неавторизованных пользователей
-        if not self.request.user.is_authenticated:
-            queryset = queryset.filter(enabled=True)
+        # # Фильтрация по enabled для неавторизованных пользователей
+        # if not self.request.user.is_authenticated:
+        #     queryset = queryset.filter(enabled=True)
         
         # Фильтрация по направлениям
         direction_id = self.request.query_params.get('direction')
@@ -51,8 +51,8 @@ class SpecialistViewSet(viewsets.ModelViewSet):
                 # Вариант 3: Если это массив строк в JSON
                 queryset = queryset.filter(directions__icontains=str(direction_int))
                 
-                if not self.request.user.is_authenticated:
-                    queryset = queryset.filter(is_reliable=True)
+                # if not self.request.user.is_authenticated:
+                #     queryset = queryset.filter(is_reliable=True)
                     
             except (ValueError, TypeError) as e:
                 print(f"Error parsing direction: {e}")
