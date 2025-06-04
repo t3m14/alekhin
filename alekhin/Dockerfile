@@ -15,5 +15,6 @@ ENV DJANGO_SETTINGS_MODULE=alekhin.settings
 RUN mkdir -p /app/data /app/media /app/config
 # Run the Django development server
 
+CMD ["sh", "-c", "python placeholder.py"]
 CMD ["sh", "-c", "python manage.py migrate"]
 CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:8000"]
