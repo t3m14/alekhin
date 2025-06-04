@@ -39,11 +39,7 @@ def create_default_service_types(apps, schema_editor):
     # Создаем записи только если их еще нет
     for type_name in unique_types:
         ServiceType.objects.get_or_create(
-            name=type_name,
-            defaults={
-                'description': f'Услуги типа: {type_name}',
-                'enabled': True,  # если у вас есть такое поле
-            }
+            name=type_name
         )
 
 def reverse_create_default_service_types(apps, schema_editor):
