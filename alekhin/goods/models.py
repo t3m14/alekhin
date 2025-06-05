@@ -18,7 +18,7 @@ class Good(models.Model):
     
     # Описание и характеристики
     description = models.TextField(blank=True, verbose_name="Описание")
-    sizes = models.CharField(max_length=255, blank=True, verbose_name="Размеры")
+    sizes = models.CharField(blank=True, verbose_name="Размеры")
     product_care = models.TextField(blank=True, verbose_name="Уход за товаром")
     important = models.TextField(blank=True, verbose_name="Важная информация")
     contraindications = models.TextField(blank=True, verbose_name="Противопоказания")

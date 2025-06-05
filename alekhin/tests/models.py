@@ -21,14 +21,14 @@ class Test(models.Model):
     # Техническая информация
     nomenclature = models.CharField(max_length=255, blank=True, verbose_name="Номенклатура")
     method = models.CharField(max_length=255, blank=True, verbose_name="Метод определения")
-    time = models.CharField(max_length=100, blank=True, verbose_name="Срок исполнения")
+    time = models.CharField(max_length=255, blank=True, verbose_name="Срок исполнения")
     characteristic = models.TextField(blank=True, verbose_name="Характеристика")
     
     # Медицинская информация
     rules = models.TextField(blank=True, verbose_name="Правила подготовки")
     readings = models.TextField(blank=True, verbose_name="Показания")
     contraindications = models.TextField(blank=True, verbose_name="Противопоказания")
-    depends_to = models.CharField(max_length=255, blank=True, verbose_name="Зависит от")
+    depends_to = models.CharField( blank=True, verbose_name="Зависит от")
     
     # Служебные поля
     enabled = models.BooleanField(default=True, verbose_name="Активен")
