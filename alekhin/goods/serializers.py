@@ -11,7 +11,7 @@ class GoodCreateSerializer(serializers.ModelSerializer):
         fields = [
             'name', 'image', 'service_direction', 'article', 'price', 
             'description', 'sizes', 'product_care', 'important', 
-            'contraindications', 'enabled'
+            'contraindications', 'enabled', 'slug'
         ]
     
     def validate_name(self, value):
@@ -64,7 +64,7 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
         fields = [
             'name', 'image', 'service_direction', 'article', 'price', 
             'description', 'sizes', 'product_care', 'important', 
-            'contraindications', 'enabled'
+            'contraindications', 'enabled', 'slug'
         ]
     
     def validate_name(self, value):
@@ -98,5 +98,5 @@ class GoodListSerializer(serializers.ModelSerializer):
         fields = [
         'name', 'image', 'service_direction', 'article', 'price', 
         'description', 'sizes', 'product_care', 'important', 
-        'contraindications', 'enabled'
+        'contraindications', 'enabled', 'slug'
     ]
