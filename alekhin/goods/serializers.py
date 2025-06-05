@@ -92,12 +92,11 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
 
 
 class GoodListSerializer(serializers.ModelSerializer):
-    """Упрощенный сериализатор для списка товаров"""
     image = serializers.CharField(allow_null=True)
-    
     class Meta:
         model = Good
         fields = [
-            'id', 'name', 'image', 'service_direction', 
-            'article', 'price', 'enabled', 'slug', 'created_at'
-        ]
+        'name', 'image', 'service_direction', 'article', 'price', 
+        'description', 'sizes', 'product_care', 'important', 
+        'contraindications', 'enabled'
+    ]

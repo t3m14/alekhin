@@ -18,11 +18,13 @@ class CustomPagination(PageNumberPagination):
 
 
 class GoodViewSet(viewsets.ModelViewSet):
-    filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    search_fields = [
-        'name', 'article', 'description', 'sizes', 'product_care', 
-        'important', 'contraindications'
-    ]
+    filter_backends = [django_filters.DjangoFilterBackend,
+                        # filters.SearchFilter,
+                        filters.OrderingFilter]
+    # search_fields = [
+    #     'name', 'article', 'description', 'sizes', 'product_care', 
+    #     'important', 'contraindications'
+    # ]
     filterset_class = GoodFilter
     ordering_fields = ['created_at', 'name', 'price', 'article', 'service_direction']
     ordering = ['-created_at']
@@ -50,12 +52,10 @@ class GoodViewSet(viewsets.ModelViewSet):
         # Для неаутентифицированных пользователей показываем только активные товары
         if not self.request.user.is_authenticated:
             queryset = queryset.filter(enabled=True)
-        
-        # Smart search
+            # Smart search
         search_query = self.request.query_params.get('search', None)
         if search_query:
             search_query = search_query.strip()
-            search_query =  search_query.lower()
             queryset = queryset.filter(
                 Q(name__icontains=search_query) |
                 Q(article__icontains=search_query) |
@@ -64,10 +64,33 @@ class GoodViewSet(viewsets.ModelViewSet):
                 Q(product_care__icontains=search_query) |
                 Q(important__icontains=search_query) |
                 Q(contraindications__icontains=search_query)
-            ).distinct()
-
+            )
+            print(queryset, search_query)
+            if not queryset.exists():
+                search_query = str(search_query).capitalize()
+                queryset = Good.objects.filter(
+                    Q(name__icontains=search_query) |
+                    Q(article__icontains=search_query) |
+                    Q(description__icontains=search_query) |
+                    Q(sizes__icontains=search_query) |
+                    Q(product_care__icontains=search_query) |
+                    Q(important__icontains=search_query) |
+                    Q(contraindications__icontains=search_query)
+                )
+                print(queryset, search_query)
+                if not queryset.exists():
+                    search_query = str(search_query).upper()
+                    queryset = Good.objects.filter(
+                        Q(name__icontains=search_query) |
+                        Q(article__icontains=search_query) |
+                        Q(description__icontains=search_query) |
+                        Q(sizes__icontains=search_query) |
+                        Q(product_care__icontains=search_query) |
+                        Q(important__icontains=search_query) |
+                        Q(contraindications__icontains=search_query)
+                    )
+                    print(queryset, search_query)
         return queryset
-
     def list(self, request, *args, **kwargs):
         """GET /goods - получение списка товаров"""
         queryset = self.filter_queryset(self.get_queryset())
