@@ -64,53 +64,51 @@ class GoodViewSet(viewsets.ModelViewSet):
                 Q(important__icontains=search_query) |
                 Q(contraindications__icontains=search_query)
             )
-            if not queryset.exists():
-                search_query = str(search_query).capitalize()
-                queryset = Good.objects.filter(
-                    Q(name__icontains=search_query) |
-                    Q(article__icontains=search_query) |
-                    Q(description__icontains=search_query) |
-                    Q(sizes__icontains=search_query) |
-                    Q(product_care__icontains=search_query) |
-                    Q(important__icontains=search_query) |
-                    Q(contraindications__icontains=search_query)
+        if not queryset.exists():
+            search_query = str(search_query).capitalize()
+            queryset = Good.objects.filter(
+                Q(name__icontains=search_query) |
+                Q(article__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(sizes__icontains=search_query) |
+                Q(product_care__icontains=search_query) |
+                Q(important__icontains=search_query) |
+                Q(contraindications__icontains=search_query)
                 )
-                print(queryset, search_query)
-                if not queryset.exists():
-                    search_query = str(search_query).upper()
-                    queryset = Good.objects.filter(
-                        Q(name__icontains=search_query) |
-                        Q(article__icontains=search_query) |
-                        Q(description__icontains=search_query) |
-                        Q(sizes__icontains=search_query) |
-                        Q(product_care__icontains=search_query) |
-                        Q(important__icontains=search_query) |
-                        Q(contraindications__icontains=search_query)
-                    )
-                    if not queryset.exists():
-                        search_query = str(search_query).lower()
-                        queryset = Good.objects.filter(
-                            Q(name__icontains=search_query) |
-                            Q(article__icontains=search_query) |
-                            Q(description__icontains=search_query) |
-                            Q(sizes__icontains=search_query) |
-                            Q(product_care__icontains=search_query) |
-                            Q(important__icontains=search_query) |
-                            Q(contraindications__icontains=search_query)
-                        )
-                        if not queryset.exists():
-                            search_query = str(search_query).title()
-                            queryset = Good.objects.filter(
-                                Q(name__icontains=search_query) |
-                                Q(article__icontains=search_query) |
-                                Q(description__icontains=search_query) |
-                                Q(sizes__icontains=search_query) |
-                                Q(product_care__icontains=search_query) |
-                                Q(important__icontains=search_query) |
-                                Q(contraindications__icontains=search_query)
-                            )
-                            
-                    print(queryset, search_query)
+        if not queryset.exists():
+            search_query = str(search_query).upper()
+            queryset = Good.objects.filter(
+                Q(name__icontains=search_query) |
+                Q(article__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(sizes__icontains=search_query) |
+                Q(product_care__icontains=search_query) |
+                Q(important__icontains=search_query) |
+                Q(contraindications__icontains=search_query)
+            )
+        if not queryset.exists():
+            search_query = str(search_query).lower()
+            queryset = Good.objects.filter(
+                Q(name__icontains=search_query) |
+                Q(article__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(sizes__icontains=search_query) |
+                Q(product_care__icontains=search_query) |
+                Q(important__icontains=search_query) |
+                Q(contraindications__icontains=search_query)
+                )
+        if not queryset.exists():
+            search_query = str(search_query).title()
+            queryset = Good.objects.filter(
+                Q(name__icontains=search_query) |
+                Q(article__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(sizes__icontains=search_query) |
+                Q(product_care__icontains=search_query) |
+                Q(important__icontains=search_query) |
+                Q(contraindications__icontains=search_query)
+            )
+        
         return queryset
     def list(self, request, *args, **kwargs):
         """GET /goods - получение списка товаров"""
