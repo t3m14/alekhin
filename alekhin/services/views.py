@@ -26,6 +26,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
     read_only_fields = ['created_at', 'slug']
     pagination_class = CustomPagination
+    template_name = 'rest_framework/filters/django_filters.html'
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
