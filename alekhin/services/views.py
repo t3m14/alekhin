@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as django_filters
 from .serializers import *
 from .filters import ServiceFilter
-from django.db.models import Q
+from django.db.models import Q, Case, When, IntegerField
 from rest_framework.pagination import PageNumberPagination
 
 class CustomPagination(PageNumberPagination):
@@ -33,79 +33,51 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        
         # filter by job_titles
         job_titles = self.request.query_params.get('job_titles', None)
         if job_titles:
             queryset = queryset.filter(job_titles__icontains=job_titles.rstrip('/'))
-          # filter by service_type
+            
+        # filter by service_type
         service_type = self.request.query_params.get('service_type', None)
         if service_type:
             queryset = queryset.filter(service_type__iexact=service_type)
 
-          # filter by service_direction
+        # filter by service_direction
         service_direction = self.request.query_params.get('service_direction', None)
         if service_direction:
             queryset = queryset.filter(service_direction__iexact=service_direction)
 
-          # Smart search
-        search_query = self.request.query_params.get('search', None)        
+        # Улучшенный поиск с приоритетом
+        search_query = self.request.query_params.get('search', None)
         if search_query:
-            search_query = search_query.capitalize()
-            queryset = queryset.filter(
-                Q(name__istartswith=search_query) |
-                Q(description__istartswith=search_query) |
-                Q(service_direction__istartswith=search_query) |
-                Q(service_type__istartswith=search_query) |
+            search_query = search_query.strip()
+            
+            # Создаем Q объект для поиска
+            search_filter = (
                 Q(name__icontains=search_query) |
                 Q(description__icontains=search_query) |
                 Q(service_direction__icontains=search_query) |
-                Q(service_type__icontains=search_query)
-            ).distinct()
-            if not queryset.exists():
-                queryset = queryset.filter(
-                    Q(name__istartswith=search_query) |
-                    Q(description__istartswith=search_query) |
-                    Q(service_direction__istartswith=search_query) |
-                    Q(service_type__istartswith=search_query) |
-                    Q(name__icontains=search_query) |
-                    Q(description__icontains=search_query) |
-                    Q(service_direction__icontains=search_query) |
-                    Q(service_type__icontains=search_query)
-                ).distinct()
-            if not queryset.exists():
-                search_query = search_query.upper()
-                queryset = queryset.filter(
-                    Q(name__istartswith=search_query) |
-                    Q(description__istartswith=search_query) |
-                    Q(service_direction__istartswith=search_query) |
-                    Q(service_type__istartswith=search_query) |
-                    Q(name__icontains=search_query) |
-                    Q(description__icontains=search_query) |
-                    Q(service_direction__icontains=search_query) |
-                    Q(service_type__icontains=search_query)
-                ).distinct()
-            if not queryset.exists():
-                search_query = search_query.title()
-                queryset = queryset.filter(
-                    Q(name__istartswith=search_query) |
-                    Q(description__istartswith=search_query) |
-                    Q(service_direction__istartswith=search_query) |
-                    Q(service_type__istartswith=search_query) |
-                    Q(name__icontains=search_query) |
-                    Q(description__icontains=search_query) |
-                    Q(service_direction__icontains=search_query) |
-                    Q(service_type__icontains=search_query)
-                ).distinct()
-            if not queryset.exists():
-                search_query = search_query.lower()
-                queryset = queryset.filter(
-                    Q(name__istartswith=search_query) |
-                    Q(description__istartswith=search_query) |
-                    Q(service_direction__istartswith=search_query) |
-                    Q(service_type__istartswith=search_query) |
-                    Q(name__icontains=search_query) |
-                    Q(description__icontains=search_query) |
-                    Q(service_direction__icontains=search_query) |
-                    Q(service_type__icontains=search_query)
-                ).distinct()
+                Q(service_type__icontains=search_query) |
+                Q(slug__icontains=search_query)
+            )
+            
+            # Применяем фильтр и сортируем по релевантности
+            queryset = queryset.filter(search_filter).annotate(
+                relevance=Case(
+                    # Точное совпадение имени - высший приоритет
+                    When(name__iexact=search_query, then=5),
+                    # Начинается с поискового запроса
+                    When(name__istartswith=search_query, then=4),
+                    When(service_type__istartswith=search_query, then=3),
+                    When(service_direction__istartswith=search_query, then=3),
+                    # Содержит поисковый запрос
+                    When(name__icontains=search_query, then=2),
+                    When(description__icontains=search_query, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ).order_by('-relevance', '-created_at').distinct()
+            
         return queryset
