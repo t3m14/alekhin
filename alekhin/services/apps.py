@@ -8,4 +8,4 @@ class ServicesConfig(AppConfig):
         import watson
         from .models import Service
         
-        watson.register(Service, fields=('name', 'description', 'service_type', 'service_direction'))
+        watson.search.register(Service, fields=('name', 'description', 'service_type', 'service_direction'))
