@@ -37,56 +37,76 @@ class ServiceViewSet(viewsets.ModelViewSet):
         job_titles = self.request.query_params.get('job_titles', None)
         if job_titles:
             queryset = queryset.filter(job_titles__icontains=job_titles.rstrip('/'))
-
-        # filter by service_type
+          # filter by service_type
         service_type = self.request.query_params.get('service_type', None)
         if service_type:
             queryset = queryset.filter(service_type__iexact=service_type)
 
-        # filter by service_direction
+          # filter by service_direction
         service_direction = self.request.query_params.get('service_direction', None)
         if service_direction:
             queryset = queryset.filter(service_direction__iexact=service_direction)
 
-        # Smart search
+          # Smart search
         search_query = self.request.query_params.get('search', None)        
         if search_query:
-            search_query = search_query.capitalize()
+            search_query = search_query.strip()
             queryset = queryset.filter(
+                Q(name__istartswith=search_query) |
+                Q(description__istartswith=search_query) |
+                Q(service_direction__istartswith=search_query) |
+                Q(service_type__istartswith=search_query) |
                 Q(name__icontains=search_query) |
                 Q(description__icontains=search_query) |
                 Q(service_direction__icontains=search_query) |
                 Q(service_type__icontains=search_query)
             ).distinct()
             if not queryset.exists():
+                search_query = search_query.capitalize()
                 queryset = queryset.filter(
-                    Q(name__icontains=search_query.capitalize()) |
-                    Q(description__icontains=search_query.capitalize()) |
-                    Q(service_direction__icontains=search_query.capitalize()) |
-                    Q(service_type__icontains=search_query.capitalize())
+                    Q(name__istartswith=search_query) |
+                    Q(description__istartswith=search_query) |
+                    Q(service_direction__istartswith=search_query) |
+                    Q(service_type__istartswith=search_query) |
+                    Q(name__icontains=search_query) |
+                    Q(description__icontains=search_query) |
+                    Q(service_direction__icontains=search_query) |
+                    Q(service_type__icontains=search_query)
                 ).distinct()
             if not queryset.exists():
                 search_query = search_query.upper()
                 queryset = queryset.filter(
-                    Q(name__icontains=search_query.upper()) |
-                    Q(description__icontains=search_query.upper()) |
-                    Q(service_direction__icontains=search_query.upper()) |
-                    Q(service_type__icontains=search_query.upper())
+                    Q(name__istartswith=search_query) |
+                    Q(description__istartswith=search_query) |
+                    Q(service_direction__istartswith=search_query) |
+                    Q(service_type__istartswith=search_query) |
+                    Q(name__icontains=search_query) |
+                    Q(description__icontains=search_query) |
+                    Q(service_direction__icontains=search_query) |
+                    Q(service_type__icontains=search_query)
                 ).distinct()
             if not queryset.exists():
                 search_query = search_query.title()
                 queryset = queryset.filter(
-                    Q(name__icontains=search_query.title()) |
-                    Q(description__icontains=search_query.title()) |
-                    Q(service_direction__icontains=search_query.title()) |
-                    Q(service_type__icontains=search_query.title())
+                    Q(name__istartswith=search_query) |
+                    Q(description__istartswith=search_query) |
+                    Q(service_direction__istartswith=search_query) |
+                    Q(service_type__istartswith=search_query) |
+                    Q(name__icontains=search_query) |
+                    Q(description__icontains=search_query) |
+                    Q(service_direction__icontains=search_query) |
+                    Q(service_type__icontains=search_query)
                 ).distinct()
             if not queryset.exists():
                 search_query = search_query.lower()
                 queryset = queryset.filter(
-                    Q(name__icontains=search_query.lower()) |
-                    Q(description__icontains=search_query.lower()) |
-                    Q(service_direction__icontains=search_query.lower()) |
-                    Q(service_type__icontains=search_query.lower())
+                    Q(name__istartswith=search_query) |
+                    Q(description__istartswith=search_query) |
+                    Q(service_direction__istartswith=search_query) |
+                    Q(service_type__istartswith=search_query) |
+                    Q(name__icontains=search_query) |
+                    Q(description__icontains=search_query) |
+                    Q(service_direction__icontains=search_query) |
+                    Q(service_type__icontains=search_query)
                 ).distinct()
         return queryset
