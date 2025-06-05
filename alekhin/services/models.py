@@ -16,7 +16,7 @@ class Service(models.Model):
     job_titles = models.JSONField(default=list)  # List of Specialist IDs
     readings = models.TextField(null=True, blank=True)
     contraindications = models.TextField(null=True, blank=True)
-    devices = models.TextField(null=True, blank=True)
+    devices = models.TextField(null=True, blank=True)   
     need_to_have = models.TextField(null=True, blank=True)
     images = models.JSONField(default=list)
     serts = models.JSONField(default=list)

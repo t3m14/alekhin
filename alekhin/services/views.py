@@ -54,5 +54,5 @@ class ServiceViewSet(viewsets.ModelViewSet):
             search_results = watson.search.search(search_query, models=(Service,))
             service_ids = [result.object.id for result in search_results]
             queryset = queryset.filter(id__in=service_ids)
-            
+        
         return queryset
