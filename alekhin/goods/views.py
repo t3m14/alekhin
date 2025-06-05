@@ -55,7 +55,6 @@ class GoodViewSet(viewsets.ModelViewSet):
             # Smart search
         search_query = self.request.query_params.get('search', None)
         if search_query:
-            search_query = search_query.strip()
             queryset = queryset.filter(
                 Q(name__icontains=search_query) |
                 Q(article__icontains=search_query) |
@@ -65,7 +64,6 @@ class GoodViewSet(viewsets.ModelViewSet):
                 Q(important__icontains=search_query) |
                 Q(contraindications__icontains=search_query)
             )
-            print(queryset, search_query)
             if not queryset.exists():
                 search_query = str(search_query).capitalize()
                 queryset = Good.objects.filter(
@@ -89,6 +87,29 @@ class GoodViewSet(viewsets.ModelViewSet):
                         Q(important__icontains=search_query) |
                         Q(contraindications__icontains=search_query)
                     )
+                    if not queryset.exists():
+                        search_query = str(search_query).lower()
+                        queryset = Good.objects.filter(
+                            Q(name__icontains=search_query) |
+                            Q(article__icontains=search_query) |
+                            Q(description__icontains=search_query) |
+                            Q(sizes__icontains=search_query) |
+                            Q(product_care__icontains=search_query) |
+                            Q(important__icontains=search_query) |
+                            Q(contraindications__icontains=search_query)
+                        )
+                        if not queryset.exists():
+                            search_query = str(search_query).title()
+                            queryset = Good.objects.filter(
+                                Q(name__icontains=search_query) |
+                                Q(article__icontains=search_query) |
+                                Q(description__icontains=search_query) |
+                                Q(sizes__icontains=search_query) |
+                                Q(product_care__icontains=search_query) |
+                                Q(important__icontains=search_query) |
+                                Q(contraindications__icontains=search_query)
+                            )
+                            
                     print(queryset, search_query)
         return queryset
     def list(self, request, *args, **kwargs):

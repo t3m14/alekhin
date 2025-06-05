@@ -52,6 +52,42 @@ class RequestViewSet(viewsets.ModelViewSet):
                 Q(description__icontains=search_query) |
                 Q(specialist__name__icontains=search_query)
             ).distinct()
+            if not queryset.exists():
+                search_query = search_query.lower()
+                queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(phone__icontains=search_query) |
+                Q(service_name__icontains=search_query) |
+                Q(service_direction__icontains=search_query) |
+                Q(service_type__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(specialist__name__icontains=search_query)
+            ).distinct()
+            if not queryset.exists():
+                search_query = search_query.capitalize()
+                queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(phone__icontains=search_query) |
+                Q(service_name__icontains=search_query) |
+                Q(service_direction__icontains=search_query) |
+                Q(service_type__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(specialist__name__icontains=search_query)
+            ).distinct()
+                if not queryset.exists():
+                    search_query = search_query.title()
+                    queryset = queryset.filter(
+                    Q(name__icontains=search_query) |
+                    Q(email__icontains=search_query) |
+                    Q(phone__icontains=search_query) |
+                    Q(service_name__icontains=search_query) |
+                    Q(service_direction__icontains=search_query) |
+                    Q(service_type__icontains=search_query) |
+                    Q(description__icontains=search_query) |
+                    Q(specialist__name__icontains=search_query)
+                ).distinct()
 
         return queryset
 
