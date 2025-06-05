@@ -59,5 +59,28 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 Q(service_direction__icontains=search_query) |
                 Q(service_type__icontains=search_query)
             ).distinct()
-
+            if not queryset.exists():
+                search_query = search_query.capitalize()
+                queryset = queryset.filter(
+                    Q(name__icontains=search_query.capitalize()) |
+                    Q(description__icontains=search_query.capitalize()) |
+                    Q(service_direction__icontains=search_query.capitalize()) |
+                    Q(service_type__icontains=search_query.capitalize())
+                ).distinct()
+                if not queryset.exists():
+                    search_query = search_query.upper()
+                    queryset = queryset.filter(
+                        Q(name__icontains=search_query.upper()) |
+                        Q(description__icontains=search_query.upper()) |
+                        Q(service_direction__icontains=search_query.upper()) |
+                        Q(service_type__icontains=search_query.upper())
+                    ).distinct()
+                if not queryset.exists():
+                    search_query = search_query.title()
+                    queryset = queryset.filter(
+                        Q(name__icontains=search_query.title()) |
+                        Q(description__icontains=search_query.title()) |
+                        Q(service_direction__icontains=search_query.title()) |
+                        Q(service_type__icontains=search_query.title())
+                    ).distinct()
         return queryset
