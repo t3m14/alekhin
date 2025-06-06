@@ -46,6 +46,8 @@ class TestViewSet(viewsets.ModelViewSet):
         # Smart search
         search_query = self.request.query_params.get('search', None)
         if search_query:
+            search_query = search_query.strip()
+            search_query =  search_query.lower()
             queryset = queryset.filter(
                 Q(name__icontains=search_query) |
                 Q(nomenclature__icontains=search_query) |
@@ -56,54 +58,7 @@ class TestViewSet(viewsets.ModelViewSet):
                 Q(contraindications__icontains=search_query) |
                 Q(depends_to__icontains=search_query)
             ).distinct()
-        if not queryset.exists():
-            search_query = str(search_query).capitalize()
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(nomenclature__icontains=search_query) |
-                Q(method__icontains=search_query) |
-                Q(characteristic__icontains=search_query) |
-                Q(rules__icontains=search_query) |
-                Q(readings__icontains=search_query) |
-                Q(contraindications__icontains=search_query) |
-                Q(depends_to__icontains=search_query)
-            ).distinct()
-        if not queryset.exists():
-            search_query = str(search_query).upper()
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(nomenclature__icontains=search_query) |
-                Q(method__icontains=search_query) |
-                Q(characteristic__icontains=search_query) |
-                Q(rules__icontains=search_query) |
-                Q(readings__icontains=search_query) |
-                Q(contraindications__icontains=search_query) |
-                Q(depends_to__icontains=search_query)
-            ).distinct()
-        if not queryset.exists():
-            search_query = str(search_query).title()
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(nomenclature__icontains=search_query) |
-                Q(method__icontains=search_query) |
-                Q(characteristic__icontains=search_query) |
-                Q(rules__icontains=search_query) |
-                Q(readings__icontains=search_query) |
-                Q(contraindications__icontains=search_query) |
-                Q(depends_to__icontains=search_query)
-            ).distinct()
-        if not queryset.exists():
-            search_query = str(search_query).lower()
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(nomenclature__icontains=search_query) |
-                Q(method__icontains=search_query) |
-                Q(characteristic__icontains=search_query) |
-                Q(rules__icontains=search_query) |
-                Q(readings__icontains=search_query) |
-                Q(contraindications__icontains=search_query) |
-                Q(depends_to__icontains=search_query)
-            ).distinct()
+
         return queryset
 
     def list(self, request, *args, **kwargs):
@@ -154,3 +109,4 @@ class TestViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         """DELETE /tests/{slug} - удаление анализа (требует токен)"""
         return super().destroy(request, *args, **kwargs)
+    

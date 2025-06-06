@@ -3,6 +3,7 @@ services:
   backend:
     image: backend:latest
     container_name: backend
+    restart: always
     build:
       context: ./alekhin
       dockerfile: Dockerfile
@@ -30,8 +31,19 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3002:3000"
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
 volumes:
+  postgres_data:
   data:
   media:
   config:

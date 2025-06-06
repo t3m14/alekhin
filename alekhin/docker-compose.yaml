@@ -3,6 +3,8 @@ services:
   alekhin:
     image: alekhin:latest
     container_name: alekhin
+    depends_on:
+      - db
     build:
       context: .
       dockerfile: Dockerfile

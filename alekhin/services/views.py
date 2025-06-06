@@ -11,6 +11,8 @@ from .serializers import *
 from .filters import ServiceFilter
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
+from .models import Service
+
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
