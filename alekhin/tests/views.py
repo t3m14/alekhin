@@ -49,14 +49,14 @@ class TestViewSet(viewsets.ModelViewSet):
             search_query = search_query.strip()
             search_query =  search_query.lower()
             queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(nomenclature__icontains=search_query) |
-                Q(method__icontains=search_query) |
-                Q(characteristic__icontains=search_query) |
-                Q(rules__icontains=search_query) |
-                Q(readings__icontains=search_query) |
-                Q(contraindications__icontains=search_query) |
-                Q(depends_to__icontains=search_query)
+                Q(name__unaccent__lower__trigram_similar=search_query) |
+                Q(nomenclature__unaccent__lower__trigram_similar=search_query) |
+                Q(method__unaccent__lower__trigram_similar=search_query) |
+                Q(characteristic__unaccent__lower__trigram_similar=search_query) |
+                Q(rules__unaccent__lower__trigram_similar=search_query) |
+                Q(readings__unaccent__lower__trigram_similar=search_query) |
+                Q(contraindications__unaccent__lower__trigram_similar=search_query) |
+                Q(depends_to__unaccent__lower__trigram_similar=search_query)
             ).distinct()
 
         return queryset

@@ -43,52 +43,15 @@ class RequestViewSet(viewsets.ModelViewSet):
         search_query = self.request.query_params.get('search', None)
         if search_query:
             queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(email__icontains=search_query) |
-                Q(phone__icontains=search_query) |
-                Q(service_name__icontains=search_query) |
-                Q(service_direction__icontains=search_query) |
-                Q(service_type__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(specialist__name__icontains=search_query)
+                Q(name__unaccent__lower__trigram_similar=search_query) |
+                Q(email__unaccent__lower__trigram_similar=search_query) |
+                Q(phone__unaccent__lower__trigram_similar=search_query) |
+                Q(service_name__unaccent__lower__trigram_similar=search_query) |
+                Q(service_direction__unaccent__lower__trigram_similar=search_query) |
+                Q(service_type__unaccent__lower__trigram_similar=search_query) |
+                Q(description__unaccent__lower__trigram_similar=search_query) |
+                Q(specialist__name__unaccent__lower__trigram_similar=search_query)
             ).distinct()
-            if not queryset.exists():
-                search_query = search_query.lower()
-                queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(email__icontains=search_query) |
-                Q(phone__icontains=search_query) |
-                Q(service_name__icontains=search_query) |
-                Q(service_direction__icontains=search_query) |
-                Q(service_type__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(specialist__name__icontains=search_query)
-            ).distinct()
-            if not queryset.exists():
-                search_query = search_query.capitalize()
-                queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(email__icontains=search_query) |
-                Q(phone__icontains=search_query) |
-                Q(service_name__icontains=search_query) |
-                Q(service_direction__icontains=search_query) |
-                Q(service_type__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(specialist__name__icontains=search_query)
-            ).distinct()
-                if not queryset.exists():
-                    search_query = search_query.title()
-                    queryset = queryset.filter(
-                    Q(name__icontains=search_query) |
-                    Q(email__icontains=search_query) |
-                    Q(phone__icontains=search_query) |
-                    Q(service_name__icontains=search_query) |
-                    Q(service_direction__icontains=search_query) |
-                    Q(service_type__icontains=search_query) |
-                    Q(description__icontains=search_query) |
-                    Q(specialist__name__icontains=search_query)
-                ).distinct()
-
         return queryset
 
     def list(self, request, *args, **kwargs):
