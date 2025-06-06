@@ -89,24 +89,24 @@ class GoodViewSet(viewsets.ModelViewSet):
         if not queryset.exists():
             search_query = str(search_query).lower()
             queryset = Good.objects.filter(
-                Q(name__icontains=search_query) |
-                Q(article__icontains=search_query) |
-                Q(description__icontains=search_query) |
+                Q(name__unaccent__lower__trigram_similar=search_query) |
+                Q(article__unaccent__lower__trigram_similar=search_query) |
+                Q(description__unaccent__lower__trigram_similar=search_query) |
                 Q(sizes__icontains=search_query) |
-                Q(product_care__icontains=search_query) |
-                Q(important__icontains=search_query) |
-                Q(contraindications__icontains=search_query)
+                Q(product_care__unaccent__lower__trigram_similar=search_query) |
+                Q(important__unaccent__lower__trigram_similar=search_query) |
+                Q(contraindications__unaccent__lower__trigram_similar=search_query)
                 )
         if not queryset.exists():
             search_query = str(search_query).title()
             queryset = Good.objects.filter(
-                Q(name__icontains=search_query) |
-                Q(article__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(sizes__icontains=search_query) |
-                Q(product_care__icontains=search_query) |
-                Q(important__icontains=search_query) |
-                Q(contraindications__icontains=search_query)
+                Q(name__unaccent__lower__trigram_similar=search_query) |
+                Q(article__unaccent__lower__trigram_similar=search_query) |
+                Q(description__unaccent__lower__trigram_similar=search_query) |
+                Q(sizes__unaccent__lower__trigram_similar=search_query) |
+                Q(product_care__unaccent__lower__trigram_similar=search_query) |
+                Q(important__unaccent__lower__trigram_similar=search_query) |
+                Q(contraindications__unaccent__lower__trigram_similar=search_query)
             )
         
         return queryset
