@@ -16,7 +16,7 @@ pillow==11.2.1
 PyJWT==2.9.0
 pytz==2025.2
 PyYAML==6.0.2
-requests==2.32.3
+requests==2.32.4
 sqlparse==0.5.3
 tzdata==2025.2
 Unidecode==1.4.0
