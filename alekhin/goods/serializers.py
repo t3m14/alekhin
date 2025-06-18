@@ -35,14 +35,7 @@ class GoodCreateSerializer(serializers.ModelSerializer):
         if not value:
             return None
         
-        # Проверяем уникальность артикула только если он указан
-        instance = getattr(self, 'instance', None)
-        if Good.objects.filter(article=value).exclude(
-            pk=instance.pk if instance else None
-        ).exists():
-            raise serializers.ValidationError("Товар с таким артикулом уже существует")
-        
-        return value
+      
     
     def validate_price(self, value):
         if value < 0:
@@ -96,15 +89,7 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
             return None
         
         return str(value).strip()
-        # Проверяем уникальность артикула при обновлении
-        instance = getattr(self, 'instance', None)
-        if Good.objects.filter(article=value).exclude(
-            pk=instance.pk if instance else None
-        ).exists():
-            raise serializers.ValidationError("Товар с таким артикулом уже существует")
         
-        return value
-    
     def validate_price(self, value):
         if value is not None and value < 0:
             raise serializers.ValidationError("Цена не может быть отрицательной")
