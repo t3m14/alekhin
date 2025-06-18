@@ -1,17 +1,21 @@
+# alekhin/goods/serializers.py
+# Обновленные сериализаторы для модели Good с необязательным полем article
+
 from rest_framework import serializers
 from .models import Good
 from images.serializers import ImageSerializer
 
 
 class GoodCreateSerializer(serializers.ModelSerializer):
-    image = serializers.CharField(allow_null=True)
+    image = serializers.CharField(allow_null=True, required=False)
+    article = serializers.CharField(max_length=100, allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
     
     class Meta:
         model = Good
         fields = [
             'name', 'image', 'service_direction', 'article', 'price', 
             'description', 'sizes', 'product_care', 'important', 
-            'contraindications', 'enabled', 'slug'
+            'contraindications', 'enabled'
         ]
     
     def validate_name(self, value):
@@ -23,6 +27,22 @@ class GoodCreateSerializer(serializers.ModelSerializer):
         if not value or not str(value).strip():
             raise serializers.ValidationError("Артикул не может быть пустым")
 
+        # Артикул теперь необязательный
+        if value is None or value == "":
+            return None
+        
+        value = str(value).strip()
+        if not value:
+            return None
+        
+        # Проверяем уникальность артикула только если он указан
+        instance = getattr(self, 'instance', None)
+        if Good.objects.filter(article=value).exclude(
+            pk=instance.pk if instance else None
+        ).exists():
+            raise serializers.ValidationError("Товар с таким артикулом уже существует")
+        
+        return value
     
     def validate_price(self, value):
         if value < 0:
@@ -36,7 +56,8 @@ class GoodCreateSerializer(serializers.ModelSerializer):
 
 
 class GoodSerializer(serializers.ModelSerializer):
-    image = serializers.CharField(allow_null=True)
+    image = serializers.CharField(allow_null=True, required=False)
+    article = serializers.CharField(allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
     
     class Meta:
         model = Good
@@ -49,39 +70,55 @@ class GoodSerializer(serializers.ModelSerializer):
 
 
 class GoodUpdateSerializer(serializers.ModelSerializer):
-    image = serializers.CharField(allow_null=True)
+    image = serializers.CharField(allow_null=True, required=False)
+    article = serializers.CharField(max_length=100, allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
     
     class Meta:
         model = Good
         fields = [
             'name', 'image', 'service_direction', 'article', 'price', 
             'description', 'sizes', 'product_care', 'important', 
-            'contraindications', 'enabled', 'slug'
+            'contraindications', 'enabled'
         ]
     
     def validate_name(self, value):
-        if not value or not value.strip():
+        if value is not None and (not value or not value.strip()):
             raise serializers.ValidationError("Название товара не может быть пустым")
-        return value.strip()
+        return value.strip() if value else value
     
     def validate_article(self, value):
-        if not value or not str(value).strip():
-            raise serializers.ValidationError("Артикул не может быть пустым")
+        # Артикул необязательный при обновлении
+        if value is None or value == "":
+            return None
+        
+        value = str(value).strip()
+        if not value:
+            return None
         
         return str(value).strip()
+        # Проверяем уникальность артикула при обновлении
+        instance = getattr(self, 'instance', None)
+        if Good.objects.filter(article=value).exclude(
+            pk=instance.pk if instance else None
+        ).exists():
+            raise serializers.ValidationError("Товар с таким артикулом уже существует")
+        
+        return value
     
     def validate_price(self, value):
-        if value < 0:
+        if value is not None and value < 0:
             raise serializers.ValidationError("Цена не может быть отрицательной")
         return value
 
 
 class GoodListSerializer(serializers.ModelSerializer):
-    image = serializers.CharField(allow_null=True)
+    image = serializers.CharField(allow_null=True, required=False)
+    article = serializers.CharField(allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
+    
     class Meta:
         model = Good
         fields = [
-        'name', 'image', 'service_direction', 'article', 'price', 
-        'description', 'sizes', 'product_care', 'important', 
-        'contraindications', 'enabled', 'slug'
-    ]
+            'id', 'name', 'image', 'service_direction', 'article', 'price', 
+            'description', 'sizes', 'product_care', 'important', 
+            'contraindications', 'enabled', 'slug'
+        ]
