@@ -1,3 +1,6 @@
+# alekhin/goods/models.py
+# Исправленная модель Good с необязательным полем article
+
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator
@@ -10,7 +13,7 @@ class Good(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название товара")
     image = models.CharField(max_length=255, blank=True, null=True, verbose_name="Изображение товара")
     service_direction = models.PositiveIntegerField(verbose_name="ID направления услуги")
-    article = models.CharField(max_length=100, verbose_name="Артикул")
+    article = models.CharField(max_length=100, blank=True, null=True, verbose_name="Артикул")  # ✅ ИСПРАВЛЕНО!
     price = models.IntegerField(
         validators=[MinValueValidator(0)],
         verbose_name="Цена"
@@ -41,16 +44,29 @@ class Good(models.Model):
         ]
     
     def __str__(self):
-        return f"{self.name} (арт. {self.article})"
+        if self.article:
+            return f"{self.name} (арт. {self.article})"
+        else:
+            return self.name
     
     def save(self, *args, **kwargs):
         if not self.slug:
             from django.utils.text import slugify
             from unidecode import unidecode
-            self.slug = slugify(unidecode(self.name))
+            
+            # Создаем slug на основе названия
+            base_slug = slugify(unidecode(self.name))
+            slug = base_slug
+            counter = 1
+            
+            # Проверяем уникальность slug
+            while Good.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            
+            self.slug = slug
+        
         super().save(*args, **kwargs)
-
-    
     
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -58,8 +74,11 @@ class Good(models.Model):
         if not self.name or not self.name.strip():
             raise ValidationError("Название товара не может быть пустым")
         
-        if not self.article or not self.article.strip():
-            raise ValidationError("Артикул не может быть пустым")
-        
         if self.price < 0:
             raise ValidationError("Цена не может быть отрицательной")
+        
+        # Проверяем уникальность артикула только если он указан
+        if self.article and self.article.strip():
+            existing_good = Good.objects.filter(article=self.article.strip()).exclude(pk=self.pk)
+            if existing_good.exists():
+                raise ValidationError("Товар с таким артикулом уже существует")
