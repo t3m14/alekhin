@@ -22,15 +22,7 @@ class GoodCreateSerializer(serializers.ModelSerializer):
     def validate_article(self, value):
         if not value or not str(value).strip():
             raise serializers.ValidationError("Артикул не может быть пустым")
-        
-        # Проверяем уникальность артикула
-        instance = getattr(self, 'instance', None)
-        if Good.objects.filter(article=str(value).strip()).exclude(
-            pk=instance.pk if instance else None
-        ).exists():
-            raise serializers.ValidationError("Товар с таким артикулом уже существует")
-        
-        return str(value).strip()
+
     
     def validate_price(self, value):
         if value < 0:
@@ -75,13 +67,6 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
     def validate_article(self, value):
         if not value or not str(value).strip():
             raise serializers.ValidationError("Артикул не может быть пустым")
-        
-        # Проверяем уникальность артикула при обновлении
-        instance = getattr(self, 'instance', None)
-        if Good.objects.filter(article=str(value).strip()).exclude(
-            pk=instance.pk if instance else None
-        ).exists():
-            raise serializers.ValidationError("Товар с таким артикулом уже существует")
         
         return str(value).strip()
     
