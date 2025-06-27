@@ -16,6 +16,7 @@ class ItemCountService:
         '/tests/': ('tests', 'Test'),
         '/goods/': ('goods', 'Good'),
         '/requests/': ('requests', 'Request'),
+        '/news/': ('news', 'News'),
         # Можно легко добавлять новые эндпойнты
     }
     

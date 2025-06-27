@@ -59,7 +59,9 @@ urlpatterns = [
     path('requests/', include('requests.urls')),
     path('tests/', include('tests.urls')),
     path('goods/', include('goods.urls')),
-    path('items_count/', include('items_count.urls'))
+    path('items_count/', include('items_count.urls')),
+    path('news/', include('news.urls')),  
+
 ] 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -16,4 +16,5 @@ urlpatterns = [
     path('goods/', views.goods_count, name='goods_count'),
     path('requests/', views.requests_count, name='requests_count'),
     path('service_types/', views.service_types_count, name='service_types_count'),
+    path("news/", views.news_count, name="news_count"),
 ]

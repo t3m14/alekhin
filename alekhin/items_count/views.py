@@ -207,3 +207,10 @@ def service_types_count(request):
     """Получить количество типов услуг"""
     result = ItemCountService.get_count_for_endpoint('/service_types/', user=request.user)
     return Response(result, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def news_count(request):
+    """Получить количество новостей"""
+    result = ItemCountService.get_count_for_endpoint('/news/', user=request.user)
+    return Response(result, status=status.HTTP_200_OK)

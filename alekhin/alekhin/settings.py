@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'tests',
     'goods',
     'items_count',
+    'news',
 ]
 
 # Настройки для кеширования счетчиков (опционально)
