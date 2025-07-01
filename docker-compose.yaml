@@ -66,65 +66,9 @@ services:
       - pgadmin_data:/var/lib/pgadmin
       - ./backups:/var/lib/pgadmin/storage/backups
     ports:
-      - "5050:80"  # Изменен порт на 5050
+      - "5050:80"
     depends_on:
       - db
-
-  # Сервис для автоматических бекапов
-  postgres_backup:
-    image: postgres:14
-    container_name: postgres_backup
-    restart: unless-stopped
-    depends_on:
-      - db
-    environment:
-      PGPASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      POSTGRES_HOST: db
-      TZ: Europe/Stockholm
-    volumes:
-      - ./backups:/backups
-      - ./scripts:/scripts
-    command: |
-      bash -c "
-      echo 'Backup service started at $(date)'
-      while true; do
-        timestamp=\$(date +%Y%m%d_%H%M%S)
-        backup_file=\"/backups/auto_postgres_backup_\$timestamp.sql\"
-        
-        echo \"[$(date)] Starting automatic backup: \$backup_file\"
-        
-        # Ожидание готовности базы данных
-        until pg_isready -h \$POSTGRES_HOST -U \$POSTGRES_USER; do
-          echo \"Waiting for database...\"
-          sleep 5
-        done
-        
-        # Создание SQL дампа
-        if pg_dump -h \$POSTGRES_HOST -U \$POSTGRES_USER -d \$POSTGRES_DB > \$backup_file; then
-          echo \"[$(date)] ✓ Backup completed successfully\"
-          gzip \$backup_file
-          echo \"[$(date)] ✓ Backup compressed: \$backup_file.gz\"
-          
-          # Статистика бекапа
-          backup_size=\$(stat -c%s \"\$backup_file.gz\")
-          echo \"[$(date)] Backup size: \$((\$backup_size / 1024 / 1024)) MB\"
-        else
-          echo \"[$(date)] ✗ Backup failed!\"
-          rm -f \$backup_file
-        fi
-        
-        # Удаление старых бекапов (старше 7 дней)
-        deleted_count=\$(find /backups -name 'auto_postgres_backup_*.sql.gz' -mtime +7 -delete -print | wc -l)
-        if [ \$deleted_count -gt 0 ]; then
-          echo \"[$(date)] Deleted \$deleted_count old backup(s)\"
-        fi
-        
-        echo \"[$(date)] Next backup in 24 hours\"
-        sleep 86400
-      done
-      "
 
 volumes:
   postgres_data:
