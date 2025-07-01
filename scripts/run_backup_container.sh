@@ -17,7 +17,7 @@ docker run -d \
   --name "$BACKUP_CONTAINER_NAME" \
   --network "$NETWORK_NAME" \
   --restart unless-stopped \
-  -e PGPASSWORD=postgres \
+  -e PGPASSWORD=S3cUr3P@ssw0rd_2025! \
   -v "$(pwd)/backups:/backups" \
   postgres:14 \
   bash -c 'while true; do
