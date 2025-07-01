@@ -14,11 +14,7 @@ services:
       - ./media:/app/media
       - ./config:/app/config
       - ./alekhin:/app
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
-
+      # - ./db.sqlite3:/app/db.sqlite3
   admin:
     image: admin:latest
     container_name: admin
@@ -28,7 +24,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3001:3000"
-
   frontend:
     image: frontend:latest
     container_name: frontend
@@ -38,10 +33,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3002:3000"
-
   db:
     image: postgres:14
-    container_name: postgres_db
     restart: always
     environment:
       POSTGRES_DB: postgres
@@ -52,24 +45,10 @@ services:
     ports:
       - "5432:5432"
 
-  # pgAdmin на порту 5050
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-      - ./backups:/var/lib/pgadmin/storage/backups
-    ports:
-      - "5050:80"
-    depends_on:
-      - db
-
 volumes:
   postgres_data:
-  pgadmin_data:
+  data:
+  media:
+  config:
+  alekhin:
+  db.sqlite3:
