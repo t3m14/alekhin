@@ -60,7 +60,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: S3cUr3PgAdm1n_2025!
-      PGADMIN_CONFIG_SECURITY_KEY: "NJIFSHJ08sFhFSfhfhfsS8jfsoij"  # Минимум 16 символов
+      PGADMIN_CONFIG_SECURITY_KEY: "Xk9mP#2$vL8nQ5jR"  # Минимум 16 символов
       PGADMIN_CONFIG_SERVER_MODE: 'True'  # Обязательно для аутентификации
     user: "0:0"  # Запуск от root (если не сработает)
     volumes:
