@@ -1,0 +1,105 @@
+Docker отчет - Tue Jul  1 14:01:30 MSK 2025
+========================
+
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          89        4         7.88GB    7.193GB (91%)
+Containers      4         4         1.258MB   0B (0%)
+Local Volumes   7         1         108MB     62.94MB (58%)
+Build Cache     226       0         100.3MB   100.3MB
+
+Образы:
+backend:latest - 311MB
+admin:latest - 376MB
+frontend:latest - 444MB
+<none>:<none> - 376MB
+<none>:<none> - 311MB
+<none>:<none> - 376MB
+<none>:<none> - 444MB
+<none>:<none> - 444MB
+<none>:<none> - 376MB
+<none>:<none> - 417MB
+<none>:<none> - 376MB
+<none>:<none> - 311MB
+<none>:<none> - 311MB
+<none>:<none> - 376MB
+<none>:<none> - 311MB
+<none>:<none> - 417MB
+<none>:<none> - 311MB
+<none>:<none> - 311MB
+<none>:<none> - 311MB
+<none>:<none> - 311MB
+<none>:<none> - 301MB
+<none>:<none> - 417MB
+<none>:<none> - 376MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 293MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 415MB
+<none>:<none> - 376MB
+<none>:<none> - 290MB
+<none>:<none> - 415MB
+<none>:<none> - 376MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 415MB
+<none>:<none> - 376MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 415MB
+<none>:<none> - 415MB
+<none>:<none> - 376MB
+<none>:<none> - 376MB
+<none>:<none> - 290MB
+<none>:<none> - 376MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 292MB
+<none>:<none> - 290MB
+<none>:<none> - 290MB
+<none>:<none> - 415MB
+<none>:<none> - 376MB
+<none>:<none> - 205MB
+<none>:<none> - 205MB
+postgres:14 - 426MB
+
+Контейнеры:
+backend - 1.26MB (virtual 313MB)
+alekhin_db_1 - 70B (virtual 426MB)
+frontend - 0B (virtual 444MB)
+admin - 0B (virtual 376MB)
