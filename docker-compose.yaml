@@ -47,12 +47,4 @@ services:
 
 volumes:
   postgres_data:
-<<<<<<< HEAD
-  data:
-  media:
-  config:
-  alekhin:
-  db.sqlite3:
-=======
   pgadmin_data:
->>>>>>> 9cd44b3 (123)
