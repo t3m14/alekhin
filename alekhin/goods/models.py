@@ -13,7 +13,7 @@ class Good(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название товара")
     image = models.CharField(max_length=255, blank=True, null=True, verbose_name="Изображение товара")
     service_direction = models.PositiveIntegerField(verbose_name="ID направления услуги")
-    article = models.CharField(max_length=100, blank=True, null=True, verbose_name="Артикул")  # ✅ ИСПРАВЛЕНО!
+    article = models.CharField(max_length=100, blank=True, null=True, verbose_name="Артикул")
     price = models.IntegerField(
         validators=[MinValueValidator(0)],
         verbose_name="Цена"

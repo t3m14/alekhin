@@ -20,7 +20,7 @@ class Test(models.Model):
     
     # Техническая информация
     nomenclature = models.CharField(max_length=255, blank=True, verbose_name="Номенклатура")
-    method = models.CharField(max_length=255, blank=True, verbose_name="Метод определения")
+    method = models.CharField(blank=True, verbose_name="Метод определения")
     time = models.CharField(max_length=255, blank=True, verbose_name="Срок исполнения")
     characteristic = models.TextField(blank=True, verbose_name="Характеристика")
     

@@ -8,7 +8,7 @@ from images.serializers import ImageSerializer
 
 class GoodCreateSerializer(serializers.ModelSerializer):
     image = serializers.CharField(allow_null=True, required=False)
-    article = serializers.CharField(max_length=100, allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
+    article = serializers.CharField(max_length=100, allow_blank=True, allow_null=True, required=False)
     
     class Meta:
         model = Good
@@ -24,18 +24,9 @@ class GoodCreateSerializer(serializers.ModelSerializer):
         return value.strip()
     
     def validate_article(self, value):
-        if not value or not str(value).strip():
-            raise serializers.ValidationError("Артикул не может быть пустым")
-
-        # Артикул теперь необязательный
         if value is None or value == "":
             return None
-        
-        value = str(value).strip()
-        if not value:
-            return None
-        
-      
+        return str(value).strip()
     
     def validate_price(self, value):
         if value < 0:
@@ -50,7 +41,7 @@ class GoodCreateSerializer(serializers.ModelSerializer):
 
 class GoodSerializer(serializers.ModelSerializer):
     image = serializers.CharField(allow_null=True, required=False)
-    article = serializers.CharField(allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
+    article = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     
     class Meta:
         model = Good
@@ -64,7 +55,7 @@ class GoodSerializer(serializers.ModelSerializer):
 
 class GoodUpdateSerializer(serializers.ModelSerializer):
     image = serializers.CharField(allow_null=True, required=False)
-    article = serializers.CharField(max_length=100, allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
+    article = serializers.CharField(max_length=100, allow_blank=True, allow_null=True, required=False)
     
     class Meta:
         model = Good
@@ -80,14 +71,8 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
         return value.strip() if value else value
     
     def validate_article(self, value):
-        # Артикул необязательный при обновлении
         if value is None or value == "":
             return None
-        
-        value = str(value).strip()
-        if not value:
-            return None
-        
         return str(value).strip()
         
     def validate_price(self, value):
@@ -98,7 +83,7 @@ class GoodUpdateSerializer(serializers.ModelSerializer):
 
 class GoodListSerializer(serializers.ModelSerializer):
     image = serializers.CharField(allow_null=True, required=False)
-    article = serializers.CharField(allow_blank=True, allow_null=True, required=False)  # ✅ ИСПРАВЛЕНО!
+    article = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     
     class Meta:
         model = Good

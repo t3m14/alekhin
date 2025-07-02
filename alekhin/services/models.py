@@ -6,10 +6,10 @@ import re
 class Service(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField(null=True, blank=True)
-    main_image = models.CharField(max_length=255)
+    main_image = models.TextField()
     procedure_number = models.IntegerField()
-    procedure_duration = models.CharField(max_length=100, null=True, blank=True)
-    rehab_duration = models.CharField(max_length=100, null=True, blank=True)
+    procedure_duration = models.TextField(null=True, blank=True)
+    rehab_duration = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     service_direction = models.IntegerField(null=True, blank=True)
     service_type = models.IntegerField(null=True, blank=True)
@@ -22,7 +22,7 @@ class Service(models.Model):
     serts = models.JSONField(default=list)
     enabled = models.BooleanField(default=True)
     is_popular = models.BooleanField(default=False)
-    slug = models.SlugField(unique=True, max_length=255)
+    slug = models.TextField(unique=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def save(self, *args, **kwargs):
@@ -38,5 +38,4 @@ class Service(models.Model):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
-
 
