@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   backend:
     image: backend:latest
@@ -8,16 +9,41 @@ services:
       context: ./alekhin
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     volumes:
-      - ./data:/app/data
-      - ./media:/app/media
-      - ./config:/app/config
+      - ${DATA_PATH:-./data}:/app/data
+      - ${MEDIA_PATH:-./media}:/app/media
+      - ${CONFIG_PATH:-./config}:/app/config
       - ./alekhin:/app
+    environment:
+      # Database
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST:-db}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      
+      # Django
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-True}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS:-*}
+      
+      # JWT
+      - JWT_ACCESS_TOKEN_LIFETIME_MINUTES=${JWT_ACCESS_TOKEN_LIFETIME_MINUTES:-60}
+      - JWT_REFRESH_TOKEN_LIFETIME_DAYS=${JWT_REFRESH_TOKEN_LIFETIME_DAYS:-7}
+      
+      # CORS
+      - CORS_ALLOW_ALL_ORIGINS=${CORS_ALLOW_ALL_ORIGINS:-True}
+      - CORS_ALLOW_CREDENTIALS=${CORS_ALLOW_CREDENTIALS:-True}
+      
+      # Cache
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/1}
+      - ITEMS_COUNT_CACHE_TIMEOUT=${ITEMS_COUNT_CACHE_TIMEOUT:-300}
     depends_on:
       - db
-    environment:
-      - DATABASE_URL=postgresql://postgres:S3cUr3P@ssw0rd_2025!@db:5432/postgres
+      - redis
+    networks:
+      - app_network
 
   admin:
     image: admin:latest
@@ -27,7 +53,9 @@ services:
       context: ./alekhin-clinic_admin_frontend/
       dockerfile: Dockerfile
     ports:
-      - "3001:3000"
+      - "${ADMIN_PORT:-3001}:3000"
+    networks:
+      - app_network
 
   frontend:
     image: frontend:latest
@@ -37,39 +65,88 @@ services:
       context: ./alekhin-clinic_frontend
       dockerfile: Dockerfile
     ports:
-      - "3002:3000"
+      - "${FRONTEND_PORT:-3002}:3000"
+    networks:
+      - app_network
 
   db:
     image: postgres:14
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: S3cUr3P@ssw0rd_2025!
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # Опционально: для бэкапов
+      - ${DATA_PATH:-./data}/backups:/backups
     ports:
-      - "5432:5432"
+      - "${POSTGRES_EXTERNAL_PORT:-5432}:5432"
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-postgres}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  # pgAdmin на порту 5050
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # PgAdmin для управления базой данных (только для разработки)
   pgadmin:
-    image: dpage/pgadmin4:6.8
+    image: dpage/pgadmin4:latest
     container_name: pgadmin
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: S3cUr3PgAdm1n_2025!
-      PGADMIN_CONFIG_SERVER_MODE: 'True'  # Обязательно для аутентификации
-    user: "0:0"  # Запуск от root (если не сработает)
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@alekhin.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT:-5050}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-      - ./backups:/var/lib/pgadmin/storage/backups
+      # Конфигурация серверов
+      - ./config/pgadmin/servers.json:/pgadmin4/servers.json:ro
     ports:
-      - "5050:80"
+      - "${PGADMIN_EXTERNAL_PORT:-5050}:5050"
     depends_on:
-    - db
+      - db
+    networks:
+      - app_network
+    profiles:
+      - dev  # Запускается только с профилем dev
 
 volumes:
   postgres_data:
+    driver: local
+  redis_data:
+    driver: local
   pgadmin_data:
+    driver: local
+  data:
+    driver: local
+  media:
+    driver: local
+  config:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge

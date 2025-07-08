@@ -1,3 +1,16 @@
+# ==============================================
+# ENVIRONMENT VARIABLES & SECRETS
+# ==============================================
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+.envrc
+
+# ==============================================
+# DATABASE FILES
+# ==============================================
 *.sqlite3
 *.sqlite3-journal
 *.db
@@ -6,7 +19,10 @@ db.sqlite3
 ./alekhin/db.sqlite3
 alekhin/db.sqlite3
 db.sqlite3-journal
-# Python
+
+# ==============================================
+# PYTHON
+# ==============================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -28,20 +44,31 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Django
+# ==============================================
+# DJANGO
+# ==============================================
 *.log
 local_settings.py
 ./db.sqlite3
 db.sqlite3-journal
+migrations/__pycache__/
+*/migrations/__pycache__/
 
-# Media files
+# ==============================================
+# MEDIA & STATIC FILES
+# ==============================================
 media/
-
-# Static files
+mediafiles/
 staticfiles/
+static/
+uploads/
 
-# Environment variables
+# ==============================================
+# VIRTUAL ENVIRONMENTS
+# ==============================================
 .env
 .venv
 env/
@@ -49,15 +76,24 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.virtualenv/
+Pipfile.lock
 
-# IDE
+# ==============================================
+# IDE & EDITORS
+# ==============================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.sublime-project
+.sublime-workspace
+*.sublime-*
 
-# OS
+# ==============================================
+# OS GENERATED FILES
+# ==============================================
 .DS_Store
 .DS_Store?
 ._*
@@ -65,3 +101,127 @@ venv.bak/
 .Trashes
 ehthumbs.db
 Thumbs.db
+Desktop.ini
+
+# ==============================================
+# DOCKER
+# ==============================================
+.dockerignore
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ==============================================
+# LOGS
+# ==============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==============================================
+# CERTIFICATES & KEYS
+# ==============================================
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+ssl/
+certs/
+
+# ==============================================
+# BACKUP FILES
+# ==============================================
+*.bak
+*.backup
+*.sql.gz
+*.dump
+data/backups/*.sql
+backups/
+
+# ==============================================
+# CACHE & TEMPORARY FILES
+# ==============================================
+.cache/
+.tmp/
+tmp/
+temp/
+.sass-cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# ==============================================
+# NODE.JS (если используется для фронтенда)
+# ==============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+.next/
+out/
+
+# ==============================================
+# FRONTEND BUILD FILES
+# ==============================================
+dist/
+build/
+.nuxt/
+.next/
+.svelte-kit/
+
+# ==============================================
+# CONFIGURATION FILES (с секретами)
+# ==============================================
+config/secrets/
+config/local/
+config/production/
+config/staging/
+config/development/local.py
+config/production/local.py
+
+# ==============================================
+# MONITORING & PROFILING
+# ==============================================
+.prof
+*.prof
+.nyc_output/
+coverage/
+
+# ==============================================
+# LINTING & FORMATTING
+# ==============================================
+.eslintcache
+.stylelintcache
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ==============================================
+# CUSTOM PROJECT SPECIFIC
+# ==============================================
+# Добавьте сюда специфичные для проекта файлы
+
+# Локальные настройки разработчика
+local_settings/
+developer_notes.md
+TODO.md
+
+# Тестовые файлы и данные
+test_data/
+fixtures/local/
+test_uploads/
+
+# Документация билдов
+docs/_build/
+site/
