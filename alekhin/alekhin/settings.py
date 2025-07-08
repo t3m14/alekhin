@@ -145,6 +145,7 @@ INSTALLED_APPS = [
     'tests',
     'goods',
     'items_count',
+    'news',
 ]
 
 MIDDLEWARE = [
